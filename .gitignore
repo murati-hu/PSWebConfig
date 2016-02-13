@@ -1,0 +1,4 @@
+/build/
+Test.xml
+vendor/packages/
+*.sandbox.ps1

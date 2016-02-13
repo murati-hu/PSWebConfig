@@ -1,0 +1,4 @@
+﻿address,statuscodes,shouldpass
+wrongurl,,0
+https://www.google.com,,1
+http://bing.com,^999$,0
