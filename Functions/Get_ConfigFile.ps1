@@ -1,11 +1,20 @@
-function Read-AppConfig {
+function Get_ConfigFile {
+    [CmdletBinding()]
     param(
-        [String]$Path,
-        [bool]$ReadContent,
-        [bool]$AsText,
-        [bool]$IncludeHeader,
-        [bool]$Recurse,
-        [string]$Verbose
+        [Parameter(Position=0)]
+        [string]$Path,
+
+        [Parameter(Position=1)]
+        [string[]]$Sections = @('connectionStrings', 'appSettings', 'system.web'),
+
+        [Parameter(Position=2)]
+        [bool]$AsFileName=$false,
+
+        [Parameter(Position=3)]
+        [bool]$AsText=$false,
+
+        [Parameter(Position=4)]
+        [bool]$Recurse=$false
     )
 
     function Copy_WebConfig([string]$config) {
@@ -14,7 +23,7 @@ function Read-AppConfig {
             return $null
         }
 
-        # Construct Temp folder
+        # Copy the original file to temp for non-intrusive decryptions
         $tempFolder = [System.IO.Path]::GetTempPath()
         $appGuid = [guid]::NewGuid().Guid
         $tempAppFolder = Join-Path $tempFolder $appGuid
@@ -29,12 +38,29 @@ function Read-AppConfig {
         return $tempAppConfig
     }
 
-    function Decypt_WebConfig([string]$folder) {
+    function Detect_AspNetRegIIS {
+        $paths = @(
+            "$($env:SystemRoot)\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe"
+            "$($env:SystemRoot)\Microsoft.NET\Framework\v2.0.50727\aspnet_regiis.exe"
+        )
+        foreach ($path in $paths) {
+            if (Test-Path -Path $path) {
+                Write-Verbose "$paths is found"
+                return $path
+            }
+        }
+        Write-Warning "Cannot find aspnet_regiis.exe in any known folders"
+        return $null
+    }
+
+    function Decypt_WebConfig {
+        param(
+            [string]$folder,
+            [string]$aspnet_regiis = $(Detect_AspNetRegIIS),
+            [string[]]$sections
+        )
         $webConfigFile = Join-Path $folder 'web.config'
         if (Test-Path $webConfigFile) {
-            $aspnet_regiis = "c:/windows/microsoft.net/framework/v4.0.30319/aspnet_regiis.exe"
-            $sections = @('connectionStrings', 'appSettings', 'Cassandra', 'SquareSettings', 'FreshBooksSettings', 'HighriseSettings', 'nhibernate', 'system.web', 'system.web/sessionState')
-
             $xmlContent = [xml](Get-Content $webConfigFile)
             if (-Not $xmlContent) {
                 Write-Warning "'$webConfigFile' is not a valid XML file."
@@ -42,12 +68,12 @@ function Read-AppConfig {
 
             foreach ($s in $sections) {
                 $encryptedSection = ($xmlContent -and ($xmlContent.configuration.$s.EncryptedData -or $s -match '/'))
-                if ($encryptedSection) {
+                if ($encryptedSection -and $aspnet_regiis) {
                     $cryptArgs = "-pdf $s $folder"
                     Write-Verbose "Decrypting > $aspnet_regiis $cryptArgs"
                     Start-Process -FilePath $aspnet_regiis -ArgumentList $cryptArgs -WindowStyle Hidden -Wait
                 } else {
-                    Write-Verbose "Skipping decryption of '$s' section "
+                    Write-Verbose "Skipping decryption of '$s' section"
                 }
             }
         }
@@ -55,19 +81,17 @@ function Read-AppConfig {
 
     if ([String]::IsNullOrEmpty($Path) -or -Not (Test-Path $Path)) { return }
 
-    $VerbosePreference = $Verbose
-
     Write-Verbose "Looking for config files at '$Path'.."
     $configs = $()
     foreach ($f in @("web.config","*.exe.config")) {
         $found = $null
         $found = Get-ChildItem $Path -Filter $f -Recurse:$Recurse -ErrorAction SilentlyContinue
-        if ($found) {
-            $configs += @($found)
-        }
+        if ($found) { $configs += @($found) }
     }
+    $configs =  $configs | Select-Object -Unique
 
-    if ($ReadContent) {
+    if ($AsFileName) { $configs.FullName }
+    else {
         foreach ($c in ($configs | Select -Unique)) {
             $content = $null
             Write-Verbose "File '$($c.FullName)'.."
@@ -82,7 +106,7 @@ function Read-AppConfig {
                 $tempAppFolder = Split-Path $tempAppConfig -Parent
 
                 if (Test-Path $tempAppConfig) {
-                    Decypt_WebConfig -folder $tempAppFolder
+                    Decypt_WebConfig -folder $tempAppFolder -sections $Sections
 
                     Write-Verbose "Reading web.config content"
                     $content = Get-Content $tempAppConfig | Out-String
@@ -96,21 +120,12 @@ function Read-AppConfig {
                 $content = Get-Content $c.FullName | Out-String
             }
 
-            if ($AsText) {
-                if ($IncludeHeader) {
-                    "#### $($c.FullName) ####"
-                }
-                $content
-            }
-            else {
+            if (!$AsText) {
                 $content = [xml]$content
                 $content | Add-Member -NotePropertyName File -NotePropertyValue $c.FullName
                 $content
             }
+            else { $content }
         }
-    } else {
-        $configs.FullName
     }
-
-    $VerbosePreference = 'SilentlyContinue'
 }

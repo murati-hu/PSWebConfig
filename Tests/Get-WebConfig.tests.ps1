@@ -27,7 +27,7 @@ Describe "Web.config file test" {
     }
 }
 
-Describe "PSWebConfig Model" {
+Describe "Get-PSWebConfig" {
     # Load test file
     $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
 
@@ -41,9 +41,6 @@ Describe "PSWebConfig Model" {
 
     It "Should have a configuration section" {
         $config.configuration | Should Not BeNullOrEmpty
-    }
-
-    It "Should have a configuration section" {
         $config.configuration.GetType().Name | Should Be "XmlElement"
     }
 }

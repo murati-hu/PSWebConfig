@@ -19,7 +19,7 @@ Foreach ($command in (Get-Command -Module $moduleName))
         It "Should have proper help" {
             $help = Get-Help $command.Name
             $help.description | Should Not BeNullOrEmpty
-            $help.Synopsys | Should Not BeNullOrEmpty
+            $help.Synopsis | Should Not BeNullOrEmpty
             $help.examples | Should Not BeNullOrEmpty
         }
     }
