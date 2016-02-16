@@ -31,7 +31,7 @@
 .EXAMPLE
     Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\' -ComputerName 'server1.local.domain'
 .EXAMPLE
-    Get-XWebSite | Get-XConfig -AsText -Recurse
+    Get-WebSite | Get-PSWebConfig -AsText -Recurse
 #>
 function Get-PSWebConfig {
     [CmdletBinding(DefaultParameterSetName="FromPipeLine")]

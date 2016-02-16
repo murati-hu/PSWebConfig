@@ -28,19 +28,28 @@ Describe "Web.config file test" {
 }
 
 Describe "Get-PSWebConfig" {
-    # Load test file
-    $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
-
-    It "Should be able to read the file" {
-        $config | Should Not BeNullOrEmpty
+    Context "Invalid Paths" {
+        It "Should not return anything" {
+            Get-PSWebConfig -Path 'clearly:\invalid\path\to_fail' -Verbose:$TestVerbose |
+            Should BeNullOrEmpty
+        }
     }
 
-    It "Should be a valid XMLDocument" {
-        $config.GetType().Name | Should Be "XmlDocument"
-    }
+    Context "Local file" {
+        # Load test file
+        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
 
-    It "Should have a configuration section" {
-        $config.configuration | Should Not BeNullOrEmpty
-        $config.configuration.GetType().Name | Should Be "XmlElement"
+        It "Should be able to read the file" {
+            $config | Should Not BeNullOrEmpty
+        }
+
+        It "Should be a valid XMLDocument" {
+            $config.GetType().Name | Should Be "XmlDocument"
+        }
+
+        It "Should have a configuration section" {
+            $config.configuration | Should Not BeNullOrEmpty
+            $config.configuration.GetType().Name | Should Be "XmlElement"
+        }
     }
 }
