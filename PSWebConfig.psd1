@@ -24,7 +24,7 @@ CompanyName = 'murati.hu'
 Copyright = '(c) 2015. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell helper module for decrypting and inspecting web.config and app.config files in remote and local scenarios.'
+Description = 'PowerShell module for decrypting and inspecting web.config and app.config files in remote and local scenarios.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
