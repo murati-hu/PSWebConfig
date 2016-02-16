@@ -82,18 +82,25 @@ function Get-PSWebConfig {
 
         if ($InputObject) {
             Write-Verbose "Processing by InputObject"
-            foreach ($i in $InputObject) {
-                if (-NOT ($i | Get-Member -Name ComputerName)) {
-                    $i = $i | Add-Member -NotePropertyName ComputerName -NotePropertyValue $ComputerName -PassThru
+            foreach ($site in $InputObject) {
+                if (-NOT ($site | Get-Member -Name ComputerName)) {
+                    $site = $site | Add-Member -NotePropertyName ComputerName -NotePropertyValue $ComputerName -PassThru
                 }
-                if (($i | Get-Member -Name physicalPath)) {
-                    Invoke-Command `
-                        -ComputerName $i.ComputerName `
-                        -ArgumentList @($i.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
-                        -ScriptBlock ${function:Get_ConfigFile} `
-                        -EnableNetworkAccess
+                if (($site | Get-Member -Name physicalPath)) {
+                    if ($site.ComputerName -ne 'localhost') {
+                        Write-Verbose "Remote Invoke-Command to '$($i.ComputerName)'"
+                        Invoke-Command `
+                            -ComputerName $site.ComputerName `
+                            -ArgumentList @($site.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ScriptBlock ${function:Get_ConfigFile}
+                    } else {
+                        Write-Verbose "Local Invoke-Command"
+                        Invoke-Command `
+                            -ArgumentList @($site.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ScriptBlock ${function:Get_ConfigFile}
+                    }
                 } else {
-                    Write-Warning "Cannot figure folder from InputObject '$i'"
+                    Write-Warning "Cannot get path from InputObject '$site'"
                 }
             }
         }
