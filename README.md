@@ -8,7 +8,11 @@ inspect web.config or application configuration files locally or remotely.
 PSWebConfig is available via [PsGet][psget], so you can simply install it with the
 following command:
 ```powershell
+# Install it from PsGet
 Install-Module PSWebConfig
+
+# Or install it from this repository
+Install-Module -ModuleUrl https://github.com/muratiakos/PSWebConfig/archive/master.zip
 ```
 Of course you can download and install the module manually too from
 [Downloads][download]
@@ -70,11 +74,10 @@ Created and maintained by [Akos Murati][muratiakos] (<akos@murati.hu>).
 ## License
 Apache License, Version 2.0 (see [LICENSE][LICENSE])
 
-[repo]:
-[wiki]:
-[issues]:
+[repo]: https://github.com/muratiakos/PSWebConfig
+[issues]: https://github.com/muratiakos/PSWebConfig/issues
 [muratiakos]: http://murati.hu
 [license]: LICENSE
 [semver]: http://semver.org/
 [psget]: http://psget.net/
-[download]:
+[download]: https://github.com/muratiakos/PSWebConfig/archive/master.zip
