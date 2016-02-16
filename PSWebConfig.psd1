@@ -63,10 +63,13 @@ Description = 'PowerShell helper module for decrypting and inspecting web.config
 # NestedModules = @()
 
 # Functions to export from this module
-FunctionsToExport = 'Get-PSWebConfig'
+FunctionsToExport = @(
+    'Get-PSWebConfig'
+    'Get-PSConnectionString'
+)
 
 # Cmdlets to export from this module
-CmdletsToExport = 'Get-PSWebConfig'
+#CmdletsToExport = '*'
 
 # Variables to export from this module
 # VariablesToExport = '*'
