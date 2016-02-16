@@ -1,7 +1,10 @@
 . (Join-Path $PSScriptRoot Import-LocalModule.ps1)
 
 $moduleName = 'PSWebConfig'
-$expectedCommands = @('Get-PSWebConfig')
+$expectedCommands = @(
+    'Get-PSWebConfig'
+    'Get-PSConnectionString'
+)
 
 Describe "$moduleName Module" {
     It "Should be loaded" {
