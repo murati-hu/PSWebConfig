@@ -79,7 +79,12 @@ function Get_ConfigFile {
         }
     }
 
-    if ([String]::IsNullOrEmpty($Path) -or -Not (Test-Path $Path)) { return }
+    # Expand and Test Path
+    $Path = [Environment]::ExpandEnvironmentVariables($Path)
+    if ([String]::IsNullOrEmpty($Path) -or -Not (Test-Path $Path)) {
+        Write-Verbose "Path '$Path' is not found."
+        return
+    }
 
     Write-Verbose "Looking for config files at '$Path'.."
     $configs = $()
