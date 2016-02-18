@@ -96,12 +96,14 @@ function Get-PSWebConfig {
                             -Session $EntrySession `
                             -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile} |
-                        Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
+                        Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
+                        Set_Type -TypeName "PSWebConfig.WebConfig"
                     } else {
                         Write-Verbose "Local Invoke-Command"
                         Invoke-Command `
                             -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
-                            -ScriptBlock ${function:Get_ConfigFile}
+                            -ScriptBlock ${function:Get_ConfigFile} |
+                        Set_Type -TypeName "PSWebConfig.WebConfig"
                     }
                 } else {
                     Write-Warning "Cannot get path from InputObject '$entry'"
