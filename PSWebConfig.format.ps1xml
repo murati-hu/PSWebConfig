@@ -2,6 +2,33 @@
 <Configuration>
   <ViewDefinitions>
     <View>
+      <Name>PSWebConfig.WebConfig</Name>
+      <ViewSelectedBy>
+        <TypeName>PSWebConfig.WebConfig</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>ComputerName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>File</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>xml</PropertyName>
+              </ListItem>
+               <ListItem>
+                <PropertyName>configuration</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+
+    <View>
       <Name>PSWebConfig.TestResult</Name>
       <ViewSelectedBy>
         <TypeName>PSWebConfig.TestResult</TypeName>
