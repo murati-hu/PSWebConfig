@@ -23,7 +23,7 @@
                 <PropertyName>Status</PropertyName>
               </ListItem>
               <ListItem>
-                <PropertyName>PSComputerName</PropertyName>
+                <PropertyName>ComputerName</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -47,7 +47,7 @@
                 <PropertyName>AddressType</PropertyName>
               </ListItem>
               <ListItem>
-                <PropertyName>PSComputerName</PropertyName>
+                <PropertyName>ComputerName</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -65,7 +65,7 @@
           <ListEntry>
             <ListItems>
               <ListItem>
-                <PropertyName>PSComputerName</PropertyName>
+                <PropertyName>ComputerName</PropertyName>
               </ListItem>
               <ListItem>
                 <PropertyName>File</PropertyName>

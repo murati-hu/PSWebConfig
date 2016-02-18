@@ -63,7 +63,8 @@ function Test-PSConnectionString {
                     Invoke-Command `
                         -Session $EntrySession `
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `
-                        -ScriptBlock $Function:Test_ConnectionString
+                        -ScriptBlock $Function:Test_ConnectionString |
+                    Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                 } else {
                     Invoke-Command `
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `

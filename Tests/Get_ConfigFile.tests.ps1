@@ -16,6 +16,8 @@ Describe "Get_ConfigFile helper" {
         $xml = Get_ConfigFile -Path $webConfigFile -Verbose:$isVerbose
         $xml | Should Not BeNullOrEmpty
         $xml.configuration.GetType().Name | Should Be "XmlElement"
+        $xml.File | Should Be $webConfigFile
+        $xml.ComputerName | Should Be ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
     }
 
     It "Should be able to read the file content" {

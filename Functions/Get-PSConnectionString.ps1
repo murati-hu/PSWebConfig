@@ -39,18 +39,24 @@ function Get-PSConnectionString {
 
                 foreach ($connectionString in $config.configuration.connectionStrings.add) {
                     $connectionString |
-                    Add-Member -NotePropertyName PSComputerName -NotePropertyValue $config.PSComputerName -Force -PassThru |
+                    Add-Member -NotePropertyName Session -NotePropertyValue $config.Session -Force -PassThru |
+                    Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
                     Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
                     Add-Member -NotePropertyName Section -NotePropertyValue "connectionStrings" -Force -PassThru |
                     Set_Type -TypeName "PSWebConfig.ConnectionString"
                 }
 
                 if (-Not $IncludeAppSettings) { continue }
+                
+                if ($config.configuration.appSettings.EncryptedData) {
+                    Write-Warning "appSettings section is encrypted. You may not see all relevant entries."
+                }
 
                 foreach ($appSetting in $config.configuration.appSettings.add) {
                     if ($appSetting.value -match 'data source=') {
                         $appSetting |
-                        Add-Member -NotePropertyName PSComputerName -NotePropertyValue $config.PSComputerName -Force -PassThru |
+                        Add-Member -NotePropertyName Session -NotePropertyValue $config.Session -Force -PassThru |
+                        Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
                         Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
                         Add-Member -NotePropertyName Section -NotePropertyValue "appSettings" -Force -PassThru |
 

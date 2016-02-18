@@ -33,7 +33,7 @@ function Test_ConnectionString {
         }
         $result.SqlQuery="SELECT name FROM sysdatabases WHERE LOWER(name) = LOWER('$DbToCheck')"
 
-        $SqlConnection = New-Object System.Data.SqlClient.SqlConnection
+        $SqlConnection = New-Object System.Data.SqlClient.SqlConnection -ErrorAction Stop
         $SqlConnection.ConnectionString = $result.ConnectionString
         $SqlConnection.Open()
 
@@ -48,7 +48,7 @@ function Test_ConnectionString {
         $result.Passed = $false
         Write-Error $_
     } finally {
-        $SqlConnection.Close()
+        if ($SqlConnection) { $SqlConnection.Close() }
     }
     return $result
 }

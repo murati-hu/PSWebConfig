@@ -46,9 +46,6 @@ function Get-PSWebConfig {
         [string]$Path,
 
         [Parameter(ParameterSetName="FromPath")]
-        [string]$ComputerName='localhost',
-
-        [Parameter(ParameterSetName="FromPath")]
         [Parameter(ParameterSetName="FromPipeLine")]
         [Parameter(ParameterSetName="AsFileName")]
         [switch]$AsFileName,
@@ -73,38 +70,41 @@ function Get-PSWebConfig {
         [Parameter(ParameterSetName="AsXml")]
         [switch]$Recurse,
 
-        [string[]]$Sections = @('connectionStrings', 'appSettings', 'system.web')
+        [string[]]$Sections = @('connectionStrings', 'appSettings', 'system.web'),
+
+        [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
         if ($Path) {
             Write-Verbose "Processing by Path"
             $InputObject = New-Object -TypeName PsObject -Property @{
-                ComputerName = $ComputerName
                 physicalPath = $Path
+                Session = $Session
             }
         }
 
         if ($InputObject) {
             Write-Verbose "Processing by InputObject"
-            foreach ($site in $InputObject) {
-                if (-NOT ($site | Get-Member -Name ComputerName)) {
-                    $site = $site | Add-Member -NotePropertyName ComputerName -NotePropertyValue $ComputerName -PassThru
-                }
-                if (($site | Get-Member -Name physicalPath)) {
-                    if ($site.ComputerName -ne 'localhost') {
-                        Write-Verbose "Remote Invoke-Command to '$($i.ComputerName)'"
+            foreach ($entry in $InputObject) {
+                if (($entry | Get-Member -Name physicalPath)) {
+                    $EntrySession = $entry.Session
+                    if ($Session) { $EntrySession = $Session }
+
+                    if ($EntrySession) {
+                        Write-Verbose "Remote Invoke-Command to '$($EntrySession.ComputerName)'"
                         Invoke-Command `
-                            -ComputerName $site.ComputerName `
-                            -ArgumentList @($site.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
-                            -ScriptBlock ${function:Get_ConfigFile}
+                            -Session $EntrySession `
+                            -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ScriptBlock ${function:Get_ConfigFile} |
+                        Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                     } else {
                         Write-Verbose "Local Invoke-Command"
                         Invoke-Command `
-                            -ArgumentList @($site.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile}
                     }
                 } else {
-                    Write-Warning "Cannot get path from InputObject '$site'"
+                    Write-Warning "Cannot get path from InputObject '$entry'"
                 }
             }
         }
