@@ -4,6 +4,7 @@ $moduleName = 'PSWebConfig'
 $expectedCommands = @(
     'Get-PSWebConfig'
     'Get-PSConnectionString'
+    'Test-PSConnectionString'
 )
 
 Describe "$moduleName Module" {
