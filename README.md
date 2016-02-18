@@ -2,7 +2,7 @@ PSWebConfig PowerShell module
 ==========================
 
 PSWebConfig is a PowerShell module that provides an easy way to decrypt and
-inspect web.config or application configuration files locally or remotely.
+inspect and test web.config or application configuration files locally or remotely.
 
 ## Installation
 PSWebConfig is available via [PsGet][psget], so you can simply install it with the
@@ -37,8 +37,17 @@ Get-PSWebConfig -Path C:\inetpub\wwwroot\
 # Pipe Get-PSWebConfig into Get-PSConnectionString to get decrypted connectionstrings
 Get-Website * | Get-PSWebConfig | Get-PSConnectionString
 
-# You can also use -IncludeAppSettings to fing connectionstrings from appSetting section
+# You can also use -IncludeAppSettings to find connectionstrings from appSetting section
 Get-PSWebConfig -Path C:\inetpub\wwwroot\ | Get-PSConnectionString -IncludeAppSettings
+```
+
+### Test ConnectionStrings
+```powershell
+# Pipe Get-PSConnectionString to Test-PSConnectionString
+Get-Website * | Get-PSWebConfig | Get-PSConnectionString -Inc | Test-PSConnectionString
+
+# You can also transform the connectionString with regex -ReplaceRules hashtable
+Test-PSConnectionString -Conn "Server=dbserver.local;Database=##TARGET_DB##" -ReplaceRules @{ '##TARGET_DB##'='myDb'}
 ```
 
 Call `help` on any of the PSWebConfig cmdlets for more information and examples.

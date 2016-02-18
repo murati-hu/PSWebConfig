@@ -15,8 +15,8 @@
 .PARAMETER Recurse
     Optional - Switch to look for multiple web.config files in sub-folders for
     web applications
-.PARAMETER ComputerName
-    Optional - Parameter to query a target computer (Default is localhost)
+.PARAMETER Session
+    Optional - PSSession to execute configuration file lookup
 .PARAMETER AsXml
     Optional - Switch to return configuration as an unencypted and parsed
     XML object output (default behavior)
