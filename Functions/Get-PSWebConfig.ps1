@@ -7,6 +7,7 @@
 
     It accepts either Path or an InputObject to discover the configuration files
     and if -Recurse is specified it discovers all sub-configuration too.
+
 .PARAMETER InputObject
     Mandatory - Parameter to pass the Application or WebSite from pipeline
 .PARAMETER Path
@@ -77,7 +78,10 @@ function Get-PSWebConfig {
     process {
         if ($Path) {
             Write-Verbose "Processing by Path"
-            $InputObject = New-Object -TypeName PsObject -Property @{ComputerName = $ComputerName; physicalPath=$Path }
+            $InputObject = New-Object -TypeName PsObject -Property @{
+                ComputerName = $ComputerName
+                physicalPath = $Path
+            }
         }
 
         if ($InputObject) {

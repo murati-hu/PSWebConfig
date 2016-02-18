@@ -53,6 +53,11 @@ function Get_ConfigFile {
         return $null
     }
 
+    function IsAdministrator {
+        $user = [Security.Principal.WindowsIdentity]::GetCurrent();
+        (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    }
+
     function Decypt_WebConfig {
         param(
             [string]$folder,
@@ -66,9 +71,15 @@ function Get_ConfigFile {
                 Write-Warning "'$webConfigFile' is not a valid XML file."
             }
 
+            $alreadyWarned=$false
             foreach ($s in $sections) {
                 $encryptedSection = ($xmlContent -and ($xmlContent.configuration.$s.EncryptedData -or $s -match '/'))
                 if ($encryptedSection -and $aspnet_regiis) {
+                    if (-Not $alreadyWarned -And -Not (IsAdministrator)) {
+                        Write-Warning "You are not in an Administrator context. You may not be able to decrypt configuration sections."
+                        $alreadyWarned = $true
+                    }
+
                     $cryptArgs = "-pdf $s $folder"
                     Write-Verbose "Decrypting > $aspnet_regiis $cryptArgs"
                     Start-Process -FilePath $aspnet_regiis -ArgumentList $cryptArgs -WindowStyle Hidden -Wait
@@ -128,6 +139,7 @@ function Get_ConfigFile {
             if (!$AsText) {
                 $content = [xml]$content
                 $content | Add-Member -NotePropertyName File -NotePropertyValue $c.FullName
+                $content | Add-Member -NotePropertyName ComputerName -NotePropertyValue ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
                 $content
             }
             else { $content }
