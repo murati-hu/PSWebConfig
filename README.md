@@ -1,6 +1,8 @@
 PSWebConfig PowerShell module
 ==========================
 
+[![Build status](https://ci.appveyor.com/api/projects/status/4tcovid4e04m1vdx?svg=true)](https://ci.appveyor.com/project/muratiakos/pswebconfig)
+
 PSWebConfig is a PowerShell module that provides an easy way to decrypt and
 inspect and test web.config or application configuration files locally or remotely.
 
