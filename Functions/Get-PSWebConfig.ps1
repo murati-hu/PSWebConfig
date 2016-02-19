@@ -75,6 +75,8 @@ function Get-PSWebConfig {
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
+        if (!$AsText -and !$AsFileName) { $AsXml = $true }
+
         if ($Path) {
             Write-Verbose "Processing by Path"
             $InputObject = New-Object -TypeName PsObject -Property @{
@@ -92,18 +94,22 @@ function Get-PSWebConfig {
 
                     if ($EntrySession) {
                         Write-Verbose "Remote Invoke-Command to '$($EntrySession.ComputerName)'"
-                        Invoke-Command `
+                        $response = Invoke-Command `
                             -Session $EntrySession `
                             -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile} |
-                        Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
-                        Set_Type -TypeName "PSWebConfig.WebConfig"
+                        Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                     } else {
                         Write-Verbose "Local Invoke-Command"
-                        Invoke-Command `
+                        $response = Invoke-Command `
                             -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
-                            -ScriptBlock ${function:Get_ConfigFile} |
-                        Set_Type -TypeName "PSWebConfig.WebConfig"
+                            -ScriptBlock ${function:Get_ConfigFile}
+                    }
+
+                    if ($AsXml) {
+                        $response | Set_Type -TypeName "PSWebConfig.WebConfig"
+                    } else {
+                        $response
                     }
                 } else {
                     Write-Warning "Cannot get path from InputObject '$entry'"
