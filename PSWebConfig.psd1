@@ -9,7 +9,7 @@
 RootModule = 'PSWebConfig.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.0.0'
+ModuleVersion = '1.1.1.0'
 
 # ID used to uniquely identify this module
 GUID = '37abef2c-d883-46be-ce1a-53d16477d01d'
@@ -21,10 +21,10 @@ Author = 'akos@murati.hu'
 CompanyName = 'murati.hu'
 
 # Copyright statement for this module
-Copyright = '(c) 2015. All rights reserved.'
+Copyright = '(c) 2016. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell module for decrypting and inspecting web.config and app.config files in remote and local scenarios.'
+Description = 'PowerShell module for decrypting, inspecting and testing web.config and application config files in remote and local scenarios.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
