@@ -9,7 +9,6 @@ $webConfigSections = @(
     "appSettings"
     "connectionStrings"
 )
-#endregion
 
 Describe "Web.config file test" {
     It "Test-file Should exists" {
