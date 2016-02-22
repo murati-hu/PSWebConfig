@@ -108,6 +108,33 @@
         </ListEntries>
       </ListControl>
     </View>
-    
+
+    <View>
+      <Name>PSWebConfig.AppSetting</Name>
+      <ViewSelectedBy>
+        <TypeName>PSWebConfig.AppSetting</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+               <ListItem>
+                <PropertyName>ComputerName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>File</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Key</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Value</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+
   </ViewDefinitions>
 </Configuration>
