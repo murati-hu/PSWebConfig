@@ -25,7 +25,7 @@ Import-Module PSWebConfig
 ```
 
 ## Examples
-### Decrypt web.config
+### View and decrypt a web.config
 ```powershell
 # You can pipe any site into Get-PSWebConfig
 Get-Website * | Get-PSWebConfig -AsText
@@ -50,6 +50,12 @@ Get-Website * | Get-PSWebConfig | Get-PSConnectionString -Inc | Test-PSConnectio
 
 # You can also transform the connectionString with regex -ReplaceRules hashtable
 Test-PSConnectionString -Conn "Server=dbserver.local;Database=##TARGET_DB##" -ReplaceRules @{ '##TARGET_DB##'='myDb'}
+```
+
+### Inspect appSettings
+```powershell
+# Pipe Get-PSWebConfig into Get-PSAppSetting to get decrypted appSettings
+Get-Website * | Get-PSWebConfig | Get-PSAppSetting
 ```
 
 Call `help` on any of the PSWebConfig cmdlets for more information and examples.
