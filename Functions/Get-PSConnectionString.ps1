@@ -48,18 +48,9 @@ function Get-PSConnectionString {
 
                 if (-Not $IncludeAppSettings) { continue }
 
-                if ($config.configuration.appSettings.EncryptedData) {
-                    Write-Warning "appSettings section is encrypted. You may not see all relevant entries."
-                }
-
-                foreach ($appSetting in $config.configuration.appSettings.add) {
-                    if ($appSetting.value -match 'data source=') {
-                        $appSetting |
-                        Add-Member -NotePropertyName Session -NotePropertyValue $config.Session -Force -PassThru |
-                        Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
-                        Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
-                        Add-Member -NotePropertyName SectionPath -NotePropertyValue "appSettings" -Force -PassThru |
-
+                $config | Get-PSAppSetting | ForEach-Object {
+                    if ($_.value -match 'data source=') {
+                        $_ |
                         Add-Member -MemberType AliasProperty -Name ConnectionString -Value value -Force -PassThru |
                         Add-Member -MemberType AliasProperty -Name Name -Value key -Force -PassThru |
                         Set_Type -TypeName "PSWebConfig.ConnectionString"

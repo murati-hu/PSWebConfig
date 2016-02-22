@@ -3,6 +3,7 @@
 $moduleName = 'PSWebConfig'
 $expectedCommands = @(
     'Get-PSWebConfig'
+    'Get-PSAppSetting'
     'Get-PSConnectionString'
     'Test-PSConnectionString'
 )
