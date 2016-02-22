@@ -13,7 +13,7 @@ Describe "Get-PSAppSetting" {
         It "should return all AppSettings" {
             $appSettings | Should Not BeNullOrEmpty
             $appSettings.Count | Should Be 5
-            $connStrs | Foreach-Object {
+            $appSettings | Foreach-Object {
                 $_.psobject.TypeNames -contains 'PSWebConfig.AppSetting' | Should Be $true
                 $_.SectionPath | Should Be 'appSettings'
                 $_.key  | Should Not BeNullOrEmpty
