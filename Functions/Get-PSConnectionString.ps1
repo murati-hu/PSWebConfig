@@ -42,12 +42,12 @@ function Get-PSConnectionString {
                     Add-Member -NotePropertyName Session -NotePropertyValue $config.Session -Force -PassThru |
                     Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
                     Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
-                    Add-Member -NotePropertyName Section -NotePropertyValue "connectionStrings" -Force -PassThru |
+                    Add-Member -NotePropertyName SectionPath -NotePropertyValue "connectionStrings" -Force -PassThru |
                     Set_Type -TypeName "PSWebConfig.ConnectionString"
                 }
 
                 if (-Not $IncludeAppSettings) { continue }
-                
+
                 if ($config.configuration.appSettings.EncryptedData) {
                     Write-Warning "appSettings section is encrypted. You may not see all relevant entries."
                 }
@@ -58,7 +58,7 @@ function Get-PSConnectionString {
                         Add-Member -NotePropertyName Session -NotePropertyValue $config.Session -Force -PassThru |
                         Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
                         Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
-                        Add-Member -NotePropertyName Section -NotePropertyValue "appSettings" -Force -PassThru |
+                        Add-Member -NotePropertyName SectionPath -NotePropertyValue "appSettings" -Force -PassThru |
 
                         Add-Member -MemberType AliasProperty -Name ConnectionString -Value value -Force -PassThru |
                         Add-Member -MemberType AliasProperty -Name Name -Value key -Force -PassThru |
