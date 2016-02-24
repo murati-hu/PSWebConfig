@@ -24,8 +24,6 @@
     Optional - Switch to return configfiles as unencrypted plain text output
 .PARAMETER AsFileName
     Optional - Switch to return found configfile names as an output
-.PARAMETER Sections
-    Optional - List of configuration sections to be decrypted
 
 .EXAMPLE
     Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\'
@@ -70,8 +68,6 @@ function Get-PSWebConfig {
         [Parameter(ParameterSetName="AsXml")]
         [switch]$Recurse,
 
-        [string[]]$Sections = @('connectionStrings', 'appSettings', 'system.web'),
-
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
@@ -96,13 +92,13 @@ function Get-PSWebConfig {
                         Write-Verbose "Remote Invoke-Command to '$($EntrySession.ComputerName)'"
                         $response = Invoke-Command `
                             -Session $EntrySession `
-                            -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ArgumentList @($entry.physicalPath, $AsFileName, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile} |
                         Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                     } else {
                         Write-Verbose "Local Invoke-Command"
                         $response = Invoke-Command `
-                            -ArgumentList @($entry.physicalPath, $Sections, $AsFileName, $AsText, $Recurse) `
+                            -ArgumentList @($entry.physicalPath, $AsFileName, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile}
                     }
 
