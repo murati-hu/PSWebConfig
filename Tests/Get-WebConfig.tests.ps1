@@ -10,6 +10,10 @@ $webConfigSections = @(
     "connectionStrings"
 )
 
+$testInput = New-Object -TypeName PsObject -Property @{
+    physicalPath = $webConfigFile
+}
+
 Describe "Web.config file test" {
     It "Test-file Should exists" {
         $webConfigFile | Should Exist
@@ -27,6 +31,42 @@ Describe "Web.config file test" {
     }
 }
 
+Describe "Get-PSWebConfig" {
+    Context "Parameters input" {
+        It "should accept -Path" {
+            Get-PSWebConfig -Path $webConfigFile -AsXml -Verbose:$TestVerbose |
+            Select-Object -ExpandProperty File |
+            Should Be $webConfigFile
+        }
+
+        It "should accept Path at 0 position" {
+            Get-PSWebConfig $webConfigFile -AsXml -Verbose:$TestVerbose |
+            Select-Object -ExpandProperty File |
+            Should Be $webConfigFile
+        }
+
+        It "should accept -InputObject" {
+            Get-PSWebConfig -InputObject $testInput -AsXml -Verbose:$TestVerbose |
+            Select-Object -ExpandProperty File |
+            Should Be $testInput.physicalPath
+        }
+    }
+    Context "Pipeline input" {
+        It "should accept testInputObject" {
+            $testInput |
+            Get-PSWebConfig -AsXml -Verbose:$TestVerbose |
+            Select-Object -ExpandProperty File |
+            Should Be $testInput.physicalPath
+        }
+
+        It "should accept FileInfo" {
+            Get-Item $webConfigFile |
+            Get-PSWebConfig -AsXml -Verbose:$TestVerbose |
+            Select-Object -ExpandProperty File |
+            Should Be $testInput.physicalPath
+        }
+    }
+}
 Describe "Get-PSWebConfig" {
     Context "Invalid Paths" {
         It "Should not return anything" {

@@ -5,15 +5,12 @@ function Get_ConfigFile {
         [string]$Path,
 
         [Parameter(Position=1)]
-        [string[]]$Sections = @('connectionStrings', 'appSettings', 'system.web'),
-
-        [Parameter(Position=2)]
         [bool]$AsFileName=$false,
 
-        [Parameter(Position=3)]
+        [Parameter(Position=2)]
         [bool]$AsText=$false,
 
-        [Parameter(Position=4)]
+        [Parameter(Position=3)]
         [bool]$Recurse=$false
     )
 
@@ -61,19 +58,22 @@ function Get_ConfigFile {
     function Decypt_WebConfig {
         param(
             [string]$folder,
-            [string]$aspnet_regiis = $(Detect_AspNetRegIIS),
-            [string[]]$sections
+            [string]$aspnet_regiis = $(Detect_AspNetRegIIS)
         )
+
         $webConfigFile = Join-Path $folder 'web.config'
         if (Test-Path $webConfigFile) {
             $xmlContent = [xml](Get-Content $webConfigFile)
             if (-Not $xmlContent) {
-                Write-Warning "'$webConfigFile' is not a valid XML file."
+                Write-Error "'$webConfigFile' is not a valid XML file."
+                return
             }
 
             $alreadyWarned=$false
+            $sections = $xmlContent.configuration | Get-Member -MemberType Property | Select-Object -ExpandProperty Name
+
             foreach ($s in $sections) {
-                $encryptedSection = ($xmlContent -and ($xmlContent.configuration.$s.EncryptedData -or $s -match '/'))
+                $encryptedSection = ($xmlContent -and ($xmlContent.configuration.$s.EncryptedData))
                 if ($encryptedSection -and $aspnet_regiis) {
                     if (-Not $alreadyWarned -And -Not (IsAdministrator)) {
                         Write-Warning "You are not in an Administrator context. You may not be able to decrypt configuration sections."
@@ -122,7 +122,7 @@ function Get_ConfigFile {
                 $tempAppFolder = Split-Path $tempAppConfig -Parent
 
                 if (Test-Path $tempAppConfig) {
-                    Decypt_WebConfig -folder $tempAppFolder -sections $Sections
+                    Decypt_WebConfig -folder $tempAppFolder
 
                     Write-Verbose "Reading web.config content"
                     $content = Get-Content $tempAppConfig | Out-String
