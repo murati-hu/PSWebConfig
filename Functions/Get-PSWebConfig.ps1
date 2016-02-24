@@ -35,11 +35,11 @@
 function Get-PSWebConfig {
     [CmdletBinding(DefaultParameterSetName="FromPipeLine")]
     param(
-        [Parameter(ParameterSetName="FromPipeLine")]
+        [Parameter(ParameterSetName="FromPipeLine",Position=0)]
         [Parameter(ValueFromPipeLine=$true)]
         [psobject[]]$InputObject,
 
-        [Parameter(ParameterSetName="FromPath",Mandatory=$true)]
+        [Parameter(ParameterSetName="FromPath",Position=0,Mandatory=$true)]
         [Alias('physicalPath')]
         [string]$Path,
 
@@ -52,11 +52,6 @@ function Get-PSWebConfig {
         [Parameter(ParameterSetName="FromPipeLine")]
         [Parameter(ParameterSetName="AsText")]
         [switch]$AsText,
-
-        [Parameter(ParameterSetName="FromPath")]
-        [Parameter(ParameterSetName="FromPipeLine")]
-        [Parameter(ParameterSetName="AsText")]
-        [switch]$IncludeHeader,
 
         [Parameter(ParameterSetName="FromPath")]
         [Parameter(ParameterSetName="FromPipeLine")]
@@ -84,7 +79,13 @@ function Get-PSWebConfig {
         if ($InputObject) {
             Write-Verbose "Processing by InputObject"
             foreach ($entry in $InputObject) {
-                if (($entry | Get-Member -Name physicalPath)) {
+
+                if ($entry -is [System.IO.FileInfo]) {
+                    Write-Verbose "Adding physicalPath alias for [System.IO.FileInfo] FullName"
+                    $entry = $entry | Add-Member -MemberType AliasProperty -Name physicalPath -Value FullName -PassThru
+                }
+
+                if ($entry | Get-Member -Name physicalPath) {
                     $EntrySession = $entry.Session
                     if ($Session) { $EntrySession = $Session }
 
