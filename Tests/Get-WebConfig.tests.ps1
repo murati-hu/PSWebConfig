@@ -19,7 +19,7 @@ Describe "Web.config file test" {
         $webConfigFile | Should Exist
     }
 
-    $xml = [xml](gc $webConfigFile)
+    $xml = [xml](Get-Content $webConfigFile)
     It "Should be a valid XMLDocument" {
         $xml.GetType().Name | Should Be "XmlDocument"
     }

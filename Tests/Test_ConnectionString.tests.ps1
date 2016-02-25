@@ -3,14 +3,12 @@
 Describe "Test_ConnectionString helper" {
     # Function to test
     . (Join-Path $PSScriptRoot '..\Functions\Test_ConnectionString.ps1')
-    $webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-    $webConfigFile = Join-Path $webConfigFolder 'web.config'
 
     @{
         Invalid='IvServer=localhost;IvDatabase=##DB##'
         NonExisting='Server=localhost;Database=##DB##ThatShouldNotExist;User Id=uname;Password=xxx;'
     }.GetEnumerator() |
-    foreach {
+    ForEach-Object {
         context "$($_.Key) SqlConnectionString" {
             $failingConnectionString=$_.Value
 

@@ -17,7 +17,7 @@ Describe "$moduleName Module" {
 Foreach ($command in (Get-Command -Module $moduleName))
 {
     Describe "$moduleName\$command Command" {
-        It "Should be expected" {
+        It "Should be an expected command" {
             $expectedCommands -contains $command.Name | Should Be $true
         }
 
