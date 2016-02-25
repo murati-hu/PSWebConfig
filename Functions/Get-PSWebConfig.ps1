@@ -22,7 +22,7 @@
     XML object output (default behavior)
 .PARAMETER AsText
     Optional - Switch to return configfiles as unencrypted plain text output
-.PARAMETER AsFileName
+.PARAMETER AsFile
     Optional - Switch to return found configfile names as an output
 
 .EXAMPLE
@@ -45,8 +45,8 @@ function Get-PSWebConfig {
 
         [Parameter(ParameterSetName="FromPath")]
         [Parameter(ParameterSetName="FromPipeLine")]
-        [Parameter(ParameterSetName="AsFileName")]
-        [switch]$AsFileName,
+        [Parameter(ParameterSetName="AsFileInfo")]
+        [switch]$AsFileInfo,
 
         [Parameter(ParameterSetName="FromPath")]
         [Parameter(ParameterSetName="FromPipeLine")]
@@ -66,7 +66,7 @@ function Get-PSWebConfig {
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
-        if (!$AsText -and !$AsFileName) { $AsXml = $true }
+        if (!$AsText -and !$AsFileInfo) { $AsXml = $true }
 
         if ($Path) {
             Write-Verbose "Processing by Path"
@@ -93,13 +93,13 @@ function Get-PSWebConfig {
                         Write-Verbose "Remote Invoke-Command to '$($EntrySession.ComputerName)'"
                         $response = Invoke-Command `
                             -Session $EntrySession `
-                            -ArgumentList @($entry.physicalPath, $AsFileName, $AsText, $Recurse) `
+                            -ArgumentList @($entry.physicalPath, $AsFileInfo, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile} |
                         Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                     } else {
                         Write-Verbose "Local Invoke-Command"
                         $response = Invoke-Command `
-                            -ArgumentList @($entry.physicalPath, $AsFileName, $AsText, $Recurse) `
+                            -ArgumentList @($entry.physicalPath, $AsFileInfo, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile}
                     }
 
