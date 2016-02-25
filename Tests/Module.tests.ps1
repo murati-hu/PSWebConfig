@@ -18,29 +18,33 @@ Describe "$moduleName Module" {
     }
 }
 
-# Test if the exported command is expected
-Foreach ($command in $exportedCommands)
-{
-    Describe "$moduleName\$command command" {
-        It "Should be an expected command" {
-            $expectedCommands -contains $command.Name | Should Be $true
-        }
+Describe 'Exported commands' {
+    # Test if the exported command is expected
+    Foreach ($command in $exportedCommands)
+    {
+        Context $command {
+            It 'Should be an expected command' {
+                $expectedCommands -contains $command.Name | Should Be $true
+            }
 
-        It "Should have proper help" {
-            $help = Get-Help $command.Name
-            $help.description | Should Not BeNullOrEmpty
-            $help.Synopsis | Should Not BeNullOrEmpty
-            $help.examples | Should Not BeNullOrEmpty
+            It 'Should have proper help' {
+                $help = Get-Help $command.Name
+                $help.description | Should Not BeNullOrEmpty
+                $help.Synopsis | Should Not BeNullOrEmpty
+                $help.examples | Should Not BeNullOrEmpty
+            }
         }
     }
 }
 
-# Test if the expected command is exported
-Foreach ($command in $expectedCommands)
-{
-    Describe "$command Command" {
-        It "Should be an exported command" {
-            $exportedCommands.Name -contains $command | Should Be $true
+Describe 'Expected commands' {
+    # Test if the expected command is exported
+    Foreach ($command in $expectedCommands)
+    {
+        Context $command {
+            It 'Should be an exported command' {
+                $exportedCommands.Name -contains $command | Should Be $true
+            }
         }
     }
 }
