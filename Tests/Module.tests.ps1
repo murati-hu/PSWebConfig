@@ -1,10 +1,14 @@
 . (Join-Path $PSScriptRoot Import-LocalModule.ps1)
 
 $moduleName = 'PSWebConfig'
+$exportedCommands = (Get-Command -Module $moduleName)
 $expectedCommands = @(
     'Get-PSWebConfig'
     'Get-PSAppSetting'
     'Get-PSConnectionString'
+    'Get-PSEndpoint'
+    'Get-PSAddress'
+    
     'Test-PSConnectionString'
 )
 
@@ -14,7 +18,8 @@ Describe "$moduleName Module" {
     }
 }
 
-Foreach ($command in (Get-Command -Module $moduleName))
+# Test if the exported command is expected
+Foreach ($command in $exportedCommands)
 {
     Describe "$moduleName\$command Command" {
         It "Should be an expected command" {
@@ -26,6 +31,16 @@ Foreach ($command in (Get-Command -Module $moduleName))
             $help.description | Should Not BeNullOrEmpty
             $help.Synopsis | Should Not BeNullOrEmpty
             $help.examples | Should Not BeNullOrEmpty
+        }
+    }
+}
+
+# Test if the expected command is exported
+Foreach ($command in $expectedCommands)
+{
+    Describe "$command Command" {
+        It "Should be an exported" {
+            $exportedCommands.Name -contains $command | Should Be $true
         }
     }
 }
