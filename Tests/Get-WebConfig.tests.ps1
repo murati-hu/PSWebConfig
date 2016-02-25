@@ -79,12 +79,12 @@ Describe "Get-PSWebConfig" {
         It "should return the XML object by default" {
             $defaultConfig = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
             $defaultConfig | Should Not BeNullOrEmpty
-            $defaultConfig.GetType().Name | Should Be "XmlDocument"
+            $defaultConfig.GetType().Name | Should Be 'XmlDocument'
             #$defaultConfig.OuterXml | Set-Content ./default.txt -Enc UTF8
 
             $xmlConfig = Get-PSWebConfig -Path $webConfigFile -AsXml -Verbose:$TestVerbose
             $xmlConfig | Should Not BeNullOrEmpty
-            $xmlConfig.GetType().Name | Should Be "XmlDocument"
+            $xmlConfig.GetType().Name | Should Be 'XmlDocument'
             #$xmlConfig.OuterXml | Set-Content ./xml.txt -Enc UTF8
 
             $defaultConfig.OuterXml | Should Be $xmlConfig.OuterXml
@@ -98,24 +98,24 @@ Describe "Get-PSWebConfig" {
 
         It "Should be a valid XML Configuration" {
             $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
-            $config.GetType().Name | Should Be "XmlDocument"
+            $config.GetType().Name | Should Be 'XmlDocument'
             $config.configuration | Should Not BeNullOrEmpty
-            $config.configuration.GetType().Name | Should Be "XmlElement"
+            $config.configuration.GetType().Name | Should Be 'XmlElement'
         }
     }
 
-    Context "FileName output" {
-        It "should match the source filename as a string" {
-            $config = Get-PSWebConfig -Path $webConfigFile -AsFileName -Verbose:$TestVerbose
+    Context "AsFileInfo output" {
+        It "should match the source File" {
+            $config = Get-PSWebConfig -Path $webConfigFile -AsFileInfo -Verbose:$TestVerbose
             $config | Should Not BeNullOrEmpty
             $config | Should Be $webConfigFile
-            $config.GetType().Name | Should Be 'String'
+            $config.GetType().Name | Should Be 'FileInfo'
         }
 
         It "should find web.config in folders" {
-            $config = Get-PSWebConfig -Path $webConfigFolder -AsFileName -Verbose:$TestVerbose
+            $config = Get-PSWebConfig -Path $webConfigFolder -AsFileInfo -Verbose:$TestVerbose
             $config | Should Not BeNullOrEmpty
-            $config | Should Be $webConfigFile
+            $config.FullName | Should Be $webConfigFile
         }
     }
 
