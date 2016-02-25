@@ -21,7 +21,7 @@ Describe "$moduleName Module" {
 # Test if the exported command is expected
 Foreach ($command in $exportedCommands)
 {
-    Describe "$moduleName\$command Command" {
+    Describe "$moduleName\$command command" {
         It "Should be an expected command" {
             $expectedCommands -contains $command.Name | Should Be $true
         }
@@ -39,7 +39,7 @@ Foreach ($command in $exportedCommands)
 Foreach ($command in $expectedCommands)
 {
     Describe "$command Command" {
-        It "Should be an exported" {
+        It "Should be an exported command" {
             $exportedCommands.Name -contains $command | Should Be $true
         }
     }
