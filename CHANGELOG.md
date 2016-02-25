@@ -8,3 +8,11 @@
  - Populating ComputerName property for all objects
  - Add PowerShell views for WebConfig, ConnectionString objects
  - Add warning for non-admin users for decrypt attemps
+
+## 1.1.0 (Feb 20, 2016)
+- Add views for all `PSWebConfig` object-types
+
+## 1.3.0 (Feb 25, 2016)
+ - Automatic decryption of all configuration sections
+ - Add `FileInfo` InputObject support
+ - Set Path as the firts positinal parameter
