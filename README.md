@@ -58,6 +58,15 @@ Test-PSConnectionString -Conn "Server=dbserver.local;Database=##TARGET_DB##" -Re
 Get-Website * | Get-PSWebConfig | Get-PSAppSetting
 ```
 
+### Get service endpoints and addresses
+```powershell
+# Pipe Get-PSWebConfig into Get-PSEndpoint to get decrypted webservice addresses
+Get-Website * | Get-PSWebConfig | Get-PSEndpoint
+
+# Or pipe Get-PSWebConfig into Get-PSAddress to get URLs from appSettings too.
+Get-Website * | Get-PSWebConfig | Get-PSAddress
+```
+
 Call `help` on any of the PSWebConfig cmdlets for more information and examples.
 
 ## Documentation

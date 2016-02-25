@@ -7,15 +7,15 @@ Describe "Get_ConfigFile helper" {
     $webConfigFile = Join-Path $webConfigFolder 'web.config'
 
     It "Should be able to find web.config files recursively" {
-        $files = Get_ConfigFile -Path $webConfigFolder -AsFileName:$true -Recurse:$true -Verbose:$isVerbose
+        $files = Get_ConfigFile -Path $webConfigFolder -AsFileInfo:$true -Recurse:$true -Verbose:$isVerbose
         $files | Should Not BeNullOrEmpty
-        $files.GetType().Name | Should Be "String"
+        $files.GetType().Name | Should Be 'FileInfo'
     }
 
     It "Should be able to return XML content" {
         $xml = Get_ConfigFile -Path $webConfigFile -Verbose:$isVerbose
         $xml | Should Not BeNullOrEmpty
-        $xml.configuration.GetType().Name | Should Be "XmlElement"
+        $xml.configuration.GetType().Name | Should Be 'XmlElement'
         $xml.File | Should Be $webConfigFile
         $xml.ComputerName | Should Be ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
     }
@@ -23,6 +23,6 @@ Describe "Get_ConfigFile helper" {
     It "Should be able to read the file content" {
         $content = Get_ConfigFile -Path $webConfigFile -AsText:$true -Verbose:$isVerbose
         $content | Should Not BeNullOrEmpty
-        $content.GetType().Name | Should Be "String"
+        $content.GetType().Name | Should Be 'String'
     }
 }

@@ -5,7 +5,7 @@ function Get_ConfigFile {
         [string]$Path,
 
         [Parameter(Position=1)]
-        [bool]$AsFileName=$false,
+        [bool]$AsFileInfo=$false,
 
         [Parameter(Position=2)]
         [bool]$AsText=$false,
@@ -106,9 +106,9 @@ function Get_ConfigFile {
     }
     $configs =  $configs | Select-Object -Unique
 
-    if ($AsFileName) { $configs.FullName }
+    if ($AsFileInfo) { $configs }
     else {
-        foreach ($c in ($configs | Select -Unique)) {
+        foreach ($c in ($configs | Select-Object -Unique)) {
             $content = $null
             Write-Verbose "File '$($c.FullName)'.."
             $isWebConfig = ($c.Name -eq 'web.config')
@@ -129,7 +129,7 @@ function Get_ConfigFile {
                 }
 
                 Write-Verbose "Deleting $tempAppFolder"
-                rmdir $tempAppFolder -Force -Recurse
+                Remove-Item $tempAppFolder -Force -Recurse
             } else {
                 # App.config
                 Write-Verbose "Reading app config content"

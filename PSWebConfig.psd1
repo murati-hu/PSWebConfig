@@ -9,7 +9,7 @@
 RootModule = 'PSWebConfig.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.0.0'
+ModuleVersion = '1.4.0.0'
 
 # ID used to uniquely identify this module
 GUID = '37abef2c-d883-46be-ce1a-53d16477d01d'
@@ -67,6 +67,8 @@ FunctionsToExport = @(
     'Get-PSWebConfig'
     'Get-PSAppSetting'
     'Get-PSConnectionString'
+    'Get-PSEndpoint'
+    'Get-PSAddress'
     'Test-PSConnectionString'
 )
 

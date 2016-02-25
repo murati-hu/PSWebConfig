@@ -32,7 +32,7 @@ function Get-PSConnectionString {
         foreach ($config in $ConfigXml) {
             if ($config -is [string]) { $config = [xml]$config }
 
-            if ($config | gm -Name configuration) {
+            if ($config | Get-Member -Name configuration) {
                 if ($config.configuration.connectionStrings.EncryptedData) {
                     Write-Warning "ConnectionStrings section is encrypted. You may not see all relevant entries."
                 }

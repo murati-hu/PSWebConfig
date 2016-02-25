@@ -136,5 +136,35 @@
       </ListControl>
     </View>
 
+    <View>
+      <Name>PSWebConfig.Address</Name>
+      <ViewSelectedBy>
+        <TypeName>PSWebConfig.Address</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+               <ListItem>
+                <PropertyName>ComputerName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>File</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>SectionPath</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>name</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>address</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+
   </ViewDefinitions>
 </Configuration>
