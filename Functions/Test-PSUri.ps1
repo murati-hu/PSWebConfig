@@ -93,13 +93,13 @@ function Test-PSUri {
                         -Session $EntrySession `
                         -ArgumentList $argumentList `
                         -ScriptBlock $Function:Test_Uri |
-                    Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru  |
-                    Set_Type -TypeName "PSWebConfig.TestsResult"
+                    Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
+                    Set_Type -TypeName 'PSWebConfig.TestResult'
                 } else {
                     Invoke-Command `
                         -ArgumentList $argumentList `
                         -ScriptBlock $Function:Test_Uri |
-                    Set_Type -TypeName "PSWebConfig.TestsResult"
+                    Set_Type -TypeName 'PSWebConfig.TestResult'
                 }
             } else {
                 Write-Verbose "InputObject doesn't contain Uri property"

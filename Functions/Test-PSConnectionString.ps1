@@ -65,12 +65,12 @@ function Test-PSConnectionString {
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `
                         -ScriptBlock $Function:Test_ConnectionString |
                     Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
-                    Set_Type -TypeName "PSWebConfig.TestsResult"
+                    Set_Type -TypeName 'PSWebConfig.TestResult'
                 } else {
                     Invoke-Command `
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `
                         -ScriptBlock $Function:Test_ConnectionString |
-                    Set_Type -TypeName "PSWebConfig.TestsResult"
+                    Set_Type -TypeName 'PSWebConfig.TestResult'
                 }
             } else {
                 Write-Verbose "InputObject doesn't contain ConnectionString property"

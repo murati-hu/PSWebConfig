@@ -23,3 +23,9 @@
  - Add `PSScriptAnalyzer` module for Pester tests
  - Fix code suggestions from `PSScriptAnalyzer`
  - Test if expected commands are exported too
+
+## 1.5.0 (Feb 28, 2016)
+ - Add `Test-PSUri` to test HTTP/HTTPS URIs
+ - Rename `PSAddress` to `PSUri`
+ - Add `ReplaceRules` to Connectionstring test results
+ - Add `PSWebConfig.TestResult` view for all `Test-PS*` objects

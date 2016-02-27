@@ -44,7 +44,7 @@
                 <PropertyName>TestType</PropertyName>
               </ListItem>
               <ListItem>
-                <PropertyName>Status</PropertyName>
+                <PropertyName>Test</PropertyName>
               </ListItem>
               <ListItem>
                 <PropertyName>Passed</PropertyName>

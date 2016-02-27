@@ -10,13 +10,14 @@ function Test_ConnectionString {
     $result = New-Object PsObject -Property @{
         ComputerName = [System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName
         TestType='SqlTest'
-        ConnectionString=$ConnectionString
-        RawConnectionString=$ConnectionString
-        ReplaceRules = $ReplaceRules
-        SqlQuery= $null
+        Test=$ConnectionString
+        Passed = $false
         Result = $null
         Status = $null
-        Passed = $false
+
+        ConnectionString=$ConnectionString
+        ReplaceRules = $ReplaceRules
+        SqlQuery= $null
     }
 
     try {

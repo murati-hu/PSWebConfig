@@ -11,11 +11,12 @@ function Test_Uri  {
     $result = New-Object PsObject -Property @{
         ComputerName = [System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName
         TestType='UriTest'
-        Uri=$Uri
+        Test=$Uri
+        Passed = $false
         Result = $null
         Status = $null
-        Passed = $false
-        RawUri=$Uri
+
+        Uri=$Uri
         ReplaceRules = $ReplaceRules
         AllowedStatusRegexp = $AllowedStatusCodeRegexp
         DisableSSLValidation = $DisableSSLValidation

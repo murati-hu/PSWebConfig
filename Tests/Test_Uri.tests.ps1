@@ -20,10 +20,11 @@ Describe "Test_Uri helper function" {
                 }
 
                 $result | Should Not BeNullOrEmpty
+                $result.ComputerName | Should Be ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
                 $result.TestType | Should Be 'UriTest'
+                $result.Test | Should Be $UriTest.uri
                 $result.Uri | Should Be $UriTest.uri
                 $result.Passed | Should Be ($uriTest.shouldpass -eq 1)
-                $result.ComputerName | Should Be ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
                 $result.Result | Should Not BeNullOrEmpty
                 $result.Status | Should Not BeNullOrEmpty
             }

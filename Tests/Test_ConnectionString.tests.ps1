@@ -15,10 +15,10 @@ Describe "Test_ConnectionString helper function" {
             It "Should have failed test result properties" {
                 $result = Test_ConnectionString -ConnectionString $failingConnectionString -Verbose:$isVerbose -EA 0
                 $result | Should Not BeNullOrEmpty
-                $result.TestType | Should Be 'SqlTest'
                 $result.ComputerName | Should Be ([System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName)
-                $result.RawConnectionString | Should Be $failingConnectionString
-                $result.ConnectionString | Should Be $result.RawConnectionString
+                $result.TestType | Should Be 'SqlTest'
+                $result.Test | Should Be $failingConnectionString
+                $result.ConnectionString | Should Be $failingConnectionString
                 $result.Passed | Should Be $false
                 $result.Result | Should Not BeNullOrEmpty
                 $result.Status | Should Match 'Failed'
@@ -29,7 +29,7 @@ Describe "Test_ConnectionString helper function" {
                 $replaceRule = @{'##DB##'='DB_SUBST'}
                 $result = Test_ConnectionString -ConnectionString $failingConnectionString -ReplaceRules $replaceRule -Verbose:$isVerbose -EA 0
 
-                $result.RawConnectionString | Should Be $failingConnectionString
+                $result.Test | Should Be $failingConnectionString
                 $result.ConnectionString | Should Be $replacedFailingConnectionString
             }
         }
