@@ -12,6 +12,7 @@ function Test_ConnectionString {
         TestType='SqlTest'
         ConnectionString=$ConnectionString
         RawConnectionString=$ConnectionString
+        ReplaceRules = $ReplaceRules
         SqlQuery= $null
         Result = $null
         Passed = $false
