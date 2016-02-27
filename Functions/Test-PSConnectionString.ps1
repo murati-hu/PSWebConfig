@@ -5,7 +5,7 @@
     The cmdlet takes a ConnectionString as an input object or as a direct
     parameter then it tries to connect to the database.
 
-    If Initial Catalog is specified it queries the server for the specified
+    If Initial Catalog is specified, it queries the server for the specified
     database otherwise it checks whether it can access the tempdb.
 
     If a Session Property is passed via InputObject or directly with -Session
@@ -64,11 +64,13 @@ function Test-PSConnectionString {
                         -Session $EntrySession `
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `
                         -ScriptBlock $Function:Test_ConnectionString |
-                    Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
+                    Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
+                    Set_Type -TypeName "PSWebConfig.TestsResult"
                 } else {
                     Invoke-Command `
                         -ArgumentList $entry.ConnectionString,$ReplaceRules `
-                        -ScriptBlock $Function:Test_ConnectionString
+                        -ScriptBlock $Function:Test_ConnectionString |
+                    Set_Type -TypeName "PSWebConfig.TestsResult"
                 }
             } else {
                 Write-Verbose "InputObject doesn't contain ConnectionString property"
