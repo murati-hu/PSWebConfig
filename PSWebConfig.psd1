@@ -65,6 +65,8 @@ Description = 'PowerShell module for decrypting, inspecting and testing web.conf
 # Functions to export from this module
 FunctionsToExport = @(
     'Get-PSWebConfig'
+    'Test-PSWebConfig'
+
     'Get-PSAppSetting'
 
     'Get-PSConnectionString'

@@ -14,9 +14,9 @@ Describe "Test_Uri helper function" {
             It "'$($uriTest.uri)' should $verb if statuscode matches '$($uriTest.statuscodes)'" {
                 $result = $null
                 if ($uriTest.statuscodes) {
-                    $result = Test_Uri -Uri $uriTest.uri -AllowedStatusCodeRegexp $uriTest.statuscodes -ErrorAction SilentlyContinue
+                    $result = Test_Uri -Uri $uriTest.uri -AllowedStatusCodeRegexp $uriTest.statuscodes -ErrorAction SilentlyContinue -Verbose:$isVerbose
                 } else {
-                    $result = Test_Uri -Uri $uriTest.uri -ErrorAction SilentlyContinue
+                    $result = Test_Uri -Uri $uriTest.uri -ErrorAction SilentlyContinue -Verbose:$isVerbose
                 }
 
                 $result | Should Not BeNullOrEmpty
