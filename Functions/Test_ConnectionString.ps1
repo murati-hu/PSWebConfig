@@ -15,6 +15,7 @@ function Test_ConnectionString {
         ReplaceRules = $ReplaceRules
         SqlQuery= $null
         Result = $null
+        Status = $null
         Passed = $false
     }
 
@@ -43,9 +44,11 @@ function Test_ConnectionString {
         $SqlCmd.Connection = $SqlConnection
 
         $result.Result = $SqlCmd.ExecuteScalar()
+        $result.Status = "Passed: '$DbToCheck'"
         $result.Passed = $true
     } catch {
         $result.Result = $_
+        $result.Status = "Failed: '$DbToCheck'"
         $result.Passed = $false
         Write-Error $_
     } finally {
