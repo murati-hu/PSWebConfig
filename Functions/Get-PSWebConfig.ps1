@@ -28,7 +28,8 @@
 .EXAMPLE
     Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\'
 .EXAMPLE
-    Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\' -ComputerName 'server1.local.domain'
+    $server1 = New-PSSession 'server1.local.domain'
+    Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\' -Session $server1
 .EXAMPLE
     Get-WebSite | Get-PSWebConfig -AsText -Recurse
 #>

@@ -1,21 +1,21 @@
 <#
 .SYNOPSIS
-    Returns any URLs from application or web configuration.
+    Returns any URIs from application or web configuration.
 .DESCRIPTION
-    It accepts configuration XMLs and returns any URLs found in appSettings and
+    It accepts configuration XMLs and returns any URIs found in appSettings and
     from client endpoint addresses.
 
-    The cmdlet filters PSAppSettings for URLs and also returns PSEndpoint results.
+    The cmdlet filters PSAppSettings for URIs and also returns PSEndpoint results.
 
 .PARAMETER ConfigXml
     Mandatory - Pipeline input for Configuration XML
 
 .EXAMPLE
-    Get-PSWebConfig -Path 'C:\inetpub\wwwroot\myapp' | Get-PSAddress
+    Get-PSWebConfig -Path 'C:\inetpub\wwwroot\myapp' | Get-PSUri
 .EXAMPLE
-    Get-WebSite mysite | Get-PSWebConfig | Get-PSAddress
+    Get-WebSite mysite | Get-PSWebConfig | Get-PSUri
 #>
-function Get-PSAddress {
+function Get-PSUri {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true,ValueFromPipeLine=$true)]
@@ -31,6 +31,7 @@ function Get-PSAddress {
             Where-Object value -imatch '^http[s]*:' |
             Add-Member -MemberType AliasProperty -Name name -Value key -Force -PassThru |
             Add-Member -MemberType AliasProperty -Name address -Value value -Force -PassThru |
-            Set_Type -TypeName 'PSWebConfig.Address'
+            Add-Member -MemberType AliasProperty -Name Uri -Value value -Force -PassThru |
+            Set_Type -TypeName 'PSWebConfig.Uri'
     }
 }

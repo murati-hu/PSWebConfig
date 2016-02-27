@@ -58,14 +58,27 @@ Test-PSConnectionString -Conn "Server=dbserver.local;Database=##TARGET_DB##" -Re
 Get-Website * | Get-PSWebConfig | Get-PSAppSetting
 ```
 
-### Get service endpoints and addresses
+### Get service endpoints and URIs
 ```powershell
 # Pipe Get-PSWebConfig into Get-PSEndpoint to get decrypted webservice addresses
 Get-Website * | Get-PSWebConfig | Get-PSEndpoint
 
-# Or pipe Get-PSWebConfig into Get-PSAddress to get URLs from appSettings too.
-Get-Website * | Get-PSWebConfig | Get-PSAddress
+# Or pipe Get-PSWebConfig into Get-PSUri to get URLs from appSettings too.
+Get-Website * | Get-PSWebConfig | Get-PSUri
 ```
+
+### Test config files completely
+`Test-PSWebConfig` function  allows complete tests on all connectionStrings and
+Service addresses from a configuration object both on local or remote computers.
+```powershell
+# Pipe Get-PSWebConfig object into Test-PSWebConfig
+Get-Website * | Get-PSWebConfig | Test-PSWebConfig
+
+# Or use -Session to test it via remote PSSession
+$server1 = New-PSSession 'server1.local.domain'
+Get-PSWebConfig -Path C:\inetpub\wwwroot\ | Test-PSWebConfig -Session $server1
+```
+
 
 Call `help` on any of the PSWebConfig cmdlets for more information and examples.
 

@@ -4,12 +4,16 @@ $moduleName = 'PSWebConfig'
 $exportedCommands = (Get-Command -Module $moduleName)
 $expectedCommands = @(
     'Get-PSWebConfig'
-    'Get-PSAppSetting'
-    'Get-PSConnectionString'
-    'Get-PSEndpoint'
-    'Get-PSAddress'
+    'Test-PSWebConfig'
     
+    'Get-PSAppSetting'
+
+    'Get-PSConnectionString'
     'Test-PSConnectionString'
+
+    'Get-PSEndpoint'
+    'Get-PSUri'
+    'Test-PSUri'
 )
 
 Describe "$moduleName Module" {

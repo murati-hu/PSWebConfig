@@ -9,7 +9,7 @@
 RootModule = 'PSWebConfig.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.4.0.0'
+ModuleVersion = '1.5.0.0'
 
 # ID used to uniquely identify this module
 GUID = '37abef2c-d883-46be-ce1a-53d16477d01d'
@@ -65,11 +65,16 @@ Description = 'PowerShell module for decrypting, inspecting and testing web.conf
 # Functions to export from this module
 FunctionsToExport = @(
     'Get-PSWebConfig'
+    'Test-PSWebConfig'
+
     'Get-PSAppSetting'
+
     'Get-PSConnectionString'
-    'Get-PSEndpoint'
-    'Get-PSAddress'
     'Test-PSConnectionString'
+
+    'Get-PSEndpoint'
+    'Get-PSUri'
+    'Test-PSUri'
 )
 
 # Cmdlets to export from this module

@@ -14,10 +14,11 @@ Describe "Get-PSEndpoint" {
             $endpoints | Should Not BeNullOrEmpty
             $endpoints.Count | Should Be 2
             $endpoints | Foreach-Object {
-                $_.psobject.TypeNames -contains 'PSWebConfig.Address' | Should Be $true
+                $_.psobject.TypeNames -contains 'PSWebConfig.Uri' | Should Be $true
                 $_.SectionPath | Should Be 'system.serviceModel/client/endpoint'
                 $_.name | Should Not BeNullOrEmpty
                 $_.address | Should Not BeNullOrEmpty
+                $_.Uri | Should Not BeNullOrEmpty
             }
         }
     }

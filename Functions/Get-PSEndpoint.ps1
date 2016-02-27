@@ -29,7 +29,8 @@ function Get-PSEndpoint {
                     Add-Member -NotePropertyName ComputerName -NotePropertyValue $config.ComputerName -Force -PassThru |
                     Add-Member -NotePropertyName File -NotePropertyValue $config.File -Force -PassThru |
                     Add-Member -NotePropertyName SectionPath -NotePropertyValue 'system.serviceModel/client/endpoint' -Force -PassThru |
-                    Set_Type -TypeName 'PSWebConfig.Address'
+                    Add-Member -MemberType AliasProperty -Name Uri -Value address -Force -PassThru |
+                    Set_Type -TypeName 'PSWebConfig.Uri'
                 }
             }
         }

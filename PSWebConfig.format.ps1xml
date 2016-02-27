@@ -38,43 +38,16 @@
           <ListEntry>
             <ListItems>
               <ListItem>
+                <PropertyName>ComputerName</PropertyName>
+              </ListItem>
+              <ListItem>
                 <PropertyName>TestType</PropertyName>
               </ListItem>
               <ListItem>
-                <PropertyName>Details</PropertyName>
+                <PropertyName>Test</PropertyName>
               </ListItem>
               <ListItem>
                 <PropertyName>Passed</PropertyName>
-              </ListItem>
-              <ListItem>
-                <PropertyName>Status</PropertyName>
-              </ListItem>
-              <ListItem>
-                <PropertyName>ComputerName</PropertyName>
-              </ListItem>
-            </ListItems>
-          </ListEntry>
-        </ListEntries>
-      </ListControl>
-    </View>
-
-    <View>
-      <Name>PSWebConfig.ServiceEndpoint</Name>
-      <ViewSelectedBy>
-        <TypeName>PSWebConfig.ServiceEndpoint</TypeName>
-      </ViewSelectedBy>
-      <ListControl>
-        <ListEntries>
-          <ListEntry>
-            <ListItems>
-              <ListItem>
-                <PropertyName>Address</PropertyName>
-              </ListItem>
-              <ListItem>
-                <PropertyName>AddressType</PropertyName>
-              </ListItem>
-              <ListItem>
-                <PropertyName>ComputerName</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -137,9 +110,9 @@
     </View>
 
     <View>
-      <Name>PSWebConfig.Address</Name>
+      <Name>PSWebConfig.Uri</Name>
       <ViewSelectedBy>
-        <TypeName>PSWebConfig.Address</TypeName>
+        <TypeName>PSWebConfig.Uri</TypeName>
       </ViewSelectedBy>
       <ListControl>
         <ListEntries>
@@ -158,7 +131,7 @@
                 <PropertyName>name</PropertyName>
               </ListItem>
               <ListItem>
-                <PropertyName>address</PropertyName>
+                <PropertyName>Uri</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>

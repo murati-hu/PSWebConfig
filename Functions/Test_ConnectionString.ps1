@@ -10,11 +10,14 @@ function Test_ConnectionString {
     $result = New-Object PsObject -Property @{
         ComputerName = [System.Net.Dns]::GetHostByName($env:COMPUTERNAME).HostName
         TestType='SqlTest'
-        ConnectionString=$ConnectionString
-        RawConnectionString=$ConnectionString
-        SqlQuery= $null
-        Result = $null
+        Test=$ConnectionString
         Passed = $false
+        Result = $null
+        Status = $null
+
+        ConnectionString=$ConnectionString
+        ReplaceRules = $ReplaceRules
+        SqlQuery= $null
     }
 
     try {
@@ -42,9 +45,11 @@ function Test_ConnectionString {
         $SqlCmd.Connection = $SqlConnection
 
         $result.Result = $SqlCmd.ExecuteScalar()
+        $result.Status = "Passed: '$DbToCheck'"
         $result.Passed = $true
     } catch {
         $result.Result = $_
+        $result.Status = "Failed: '$DbToCheck'"
         $result.Passed = $false
         Write-Error $_
     } finally {
