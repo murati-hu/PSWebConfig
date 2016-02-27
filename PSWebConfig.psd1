@@ -68,7 +68,7 @@ FunctionsToExport = @(
     'Get-PSAppSetting'
     'Get-PSConnectionString'
     'Get-PSEndpoint'
-    'Get-PSAddress'
+    'Get-PSUri'
     'Test-PSConnectionString'
 )
 
@@ -79,7 +79,9 @@ FunctionsToExport = @(
 # VariablesToExport = '*'
 
 # Aliases to export from this module
-# AliasesToExport = '*'
+AliasesToExport = @(
+    'Get-PSAddress'
+)
 
 # List of all modules packaged with this module
 # ModuleList = @()
