@@ -1,6 +1,6 @@
 ﻿$isVerbose=($VerbosePreference -eq 'Continue')
 
-Describe "Test_ConnectionString helper" {
+Describe "Test_ConnectionString helper function" {
     # Function to test
     . (Join-Path $PSScriptRoot '..\Functions\Test_ConnectionString.ps1')
 
@@ -21,6 +21,7 @@ Describe "Test_ConnectionString helper" {
                 $result.ConnectionString | Should Be $result.RawConnectionString
                 $result.Passed | Should Be $false
                 $result.Result | Should Not BeNullOrEmpty
+                $result.Status | Should Match 'Failed'
             }
 
             It "Should replace ConnectionString with ReplaceRules" {
