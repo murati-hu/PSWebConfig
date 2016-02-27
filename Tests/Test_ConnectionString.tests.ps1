@@ -5,8 +5,8 @@ Describe "Test_ConnectionString helper function" {
     . (Join-Path $PSScriptRoot '..\Functions\Test_ConnectionString.ps1')
 
     @{
-        Invalid='IvServer=localhost;IvDatabase=##DB##'
-        NonExisting='Server=localhost;Database=##DB##ThatShouldNotExist;User Id=uname;Password=xxx;'
+        Invalid='IvServer=localhost;IvDatabase=##DB##;Connection Timeout=1'
+        NonExisting='Server=localhost;Database=##DB##ThatShouldNotExist;User Id=uname;Password=xxx;Connection Timeout=1;'
     }.GetEnumerator() |
     ForEach-Object {
         context "$($_.Key) SqlConnectionString" {
