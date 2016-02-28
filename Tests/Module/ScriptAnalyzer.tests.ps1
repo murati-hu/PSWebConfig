@@ -1,6 +1,6 @@
 . (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$scriptSources = Get-ChildItem -Path $script:functionFolder -Filter '*.ps1' -Recurse
+$scriptSources = Get-ChildItem -Path $script:FunctionPath -Filter '*.ps1' -Recurse
 $scriptAnalyzer = Get-Module PSScriptAnalyzer -ListAvailable
 
 if (-Not $scriptAnalyzer) {
