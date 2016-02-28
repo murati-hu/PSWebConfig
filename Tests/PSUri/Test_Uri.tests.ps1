@@ -4,7 +4,7 @@ $isVerbose=($VerbosePreference -eq 'Continue')
 
 Describe "Test_Uri helper function" {
     # Function to test
-    . (Join-Path $script:FunctionPath 'Test_Uri.ps1')
+    . (Join-Path $script:FunctionPath 'PSUri/Test_Uri.ps1')
 
     Context "Testing multiple URIs and StatusCodes" {
         $uriTests = Import-Csv -LiteralPath (Join-Path $script:FixturePath 'webrequests.csv') -Delimiter ','
