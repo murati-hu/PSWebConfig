@@ -2,7 +2,7 @@
 
 $isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFile = Join-Path $script:configFolder 'web.config'
+$webConfigFile = Join-Path $script:FixturePath 'web.config'
 
 Describe "Get-PSConnectionString" {
     Context "Local web.config connectionStrings section" {

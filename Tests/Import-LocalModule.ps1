@@ -3,4 +3,4 @@ Remove-Module PSWebConfig -Force -ErrorAction SilentlyContinue
 Import-Module (Split-Path $PSScriptRoot -Parent)
 
 $script:functionFolder = Resolve-Path (Join-Path $PSScriptRoot '../Functions')
-$script:configFolder = Resolve-Path (Join-Path $PSScriptRoot 'Fixtures')
+$script:FixturePath = Resolve-Path (Join-Path $PSScriptRoot 'Fixtures')

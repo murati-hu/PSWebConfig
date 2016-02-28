@@ -2,7 +2,7 @@
 
 $isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFile = Join-Path $script:configFolder 'web.config'
+$webConfigFile = Join-Path $script:FixturePath 'web.config'
 
 $webConfigSections = @(
     "appSettings"
@@ -112,7 +112,7 @@ Describe "Get-PSWebConfig" {
         }
 
         It "should find web.config in folders" {
-            $config = Get-PSWebConfig -Path $script:configFolder -AsFileInfo -Verbose:$isVerbose
+            $config = Get-PSWebConfig -Path $script:FixturePath -AsFileInfo -Verbose:$isVerbose
             $config | Should Not BeNullOrEmpty
             $config.FullName | Should Be $webConfigFile
         }

@@ -5,10 +5,10 @@ $isVerbose=($VerbosePreference -eq 'Continue')
 Describe "Get_ConfigFile helper" {
     # Function to test
     . (Join-Path $script:functionFolder 'Get_ConfigFile.ps1')
-    $webConfigFile = Join-Path $script:configFolder 'web.config'
+    $webConfigFile = Join-Path $script:FixturePath 'web.config'
 
     It "Should be able to find web.config files recursively" {
-        $files = Get_ConfigFile -Path $script:configFolder -AsFileInfo:$true -Recurse:$true -Verbose:$isVerbose
+        $files = Get_ConfigFile -Path $script:FixturePath -AsFileInfo:$true -Recurse:$true -Verbose:$isVerbose
         $files | Should Not BeNullOrEmpty
         $files.GetType().Name | Should Be 'FileInfo'
     }

@@ -7,7 +7,7 @@ Describe "Test_Uri helper function" {
     . (Join-Path $script:functionFolder 'Test_Uri.ps1')
 
     Context "Testing multiple URIs and StatusCodes" {
-        $uriTests = Import-Csv -LiteralPath (Join-Path $script:configFolder 'webrequests.csv') -Delimiter ','
+        $uriTests = Import-Csv -LiteralPath (Join-Path $script:FixturePath 'webrequests.csv') -Delimiter ','
 
         foreach ($uriTest in $uriTests) {
             $verb = 'fail'
