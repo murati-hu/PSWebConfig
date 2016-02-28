@@ -1,13 +1,14 @@
-﻿$isVerbose=($VerbosePreference -eq 'Continue')
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
+
+$isVerbose=($VerbosePreference -eq 'Continue')
 
 Describe "Get_ConfigFile helper" {
     # Function to test
-    . (Join-Path $PSScriptRoot '..\Functions\Get_ConfigFile.ps1')
-    $webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-    $webConfigFile = Join-Path $webConfigFolder 'web.config'
+    . (Join-Path $script:FunctionPath 'PSWebConfig/Get_ConfigFile.ps1')
+    $webConfigFile = Join-Path $script:FixturePath 'web.config'
 
     It "Should be able to find web.config files recursively" {
-        $files = Get_ConfigFile -Path $webConfigFolder -AsFileInfo:$true -Recurse:$true -Verbose:$isVerbose
+        $files = Get_ConfigFile -Path $script:FixturePath -AsFileInfo:$true -Recurse:$true -Verbose:$isVerbose
         $files | Should Not BeNullOrEmpty
         $files.GetType().Name | Should Be 'FileInfo'
     }

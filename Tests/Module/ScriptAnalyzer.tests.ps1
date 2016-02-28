@@ -1,7 +1,6 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$functionFolder = Resolve-Path -Relative "$PSScriptRoot/../Functions"
-$scriptSources = Get-ChildItem -Path $functionFolder -Filter '*.ps1' -Recurse 
+$scriptSources = Get-ChildItem -Path $script:FunctionPath -Filter '*.ps1' -Recurse
 $scriptAnalyzer = Get-Module PSScriptAnalyzer -ListAvailable
 
 if (-Not $scriptAnalyzer) {
@@ -25,7 +24,7 @@ Describe "Script Source analysis" {
                 Where-Object Severity -eq "Warning" |
                 Should BeNullOrEmpty
             }
-            
+
         }
     }
 }

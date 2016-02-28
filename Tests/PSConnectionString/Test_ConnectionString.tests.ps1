@@ -1,8 +1,10 @@
-﻿$isVerbose=($VerbosePreference -eq 'Continue')
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
+
+$isVerbose=($VerbosePreference -eq 'Continue')
 
 Describe "Test_ConnectionString helper function" {
     # Function to test
-    . (Join-Path $PSScriptRoot '..\Functions\Test_ConnectionString.ps1')
+    . (Join-Path $script:FunctionPath 'PSConnectionString/Test_ConnectionString.ps1')
 
     @{
         Invalid='IvServer=localhost;IvDatabase=##DB##;Connection Timeout=1'

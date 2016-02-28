@@ -24,9 +24,16 @@
 - Fix code suggestions from `PSScriptAnalyzer`
 - Test if expected commands are exported too
 
-## 1.5.0 (Feb 28, 2016)
+## 1.5.0 (Feb 27, 2016)
 - Add `Test-PSUri` to test HTTP/HTTPS URIs
 - Add `Test-PSWebConfig` to fully test all URIs and Connectionstrings from complete configurations
 - Rename `PSAddress` to `PSUri`
 - Add `ReplaceRules` to Connectionstring test results
 - Add `PSWebConfig.TestResult` view for all tests
+
+## 1.5.1 (Feb 28, 2016)
+- Regenerate module manifest for PSGallery
+
+## 1.5.2 (Feb 28, 2016)
+- Refactor Pester tests and Fixtures
+- Reorganize functions into subfolders

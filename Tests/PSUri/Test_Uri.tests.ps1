@@ -1,11 +1,13 @@
-﻿$isVerbose=($VerbosePreference -eq 'Continue')
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
+
+$isVerbose=($VerbosePreference -eq 'Continue')
 
 Describe "Test_Uri helper function" {
     # Function to test
-    . (Join-Path $PSScriptRoot '..\Functions\Test_Uri.ps1')
+    . (Join-Path $script:FunctionPath 'PSUri/Test_Uri.ps1')
 
     Context "Testing multiple URIs and StatusCodes" {
-        $uriTests = Import-Csv -LiteralPath (Join-Path $PSScriptRoot 'ConfigTests/webrequest-tests.csv') -Delimiter ','
+        $uriTests = Import-Csv -LiteralPath (Join-Path $script:FixturePath 'webrequests.csv') -Delimiter ','
 
         foreach ($uriTest in $uriTests) {
             $verb = 'fail'
