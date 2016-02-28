@@ -1,11 +1,11 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
 $moduleName = 'PSWebConfig'
 $exportedCommands = (Get-Command -Module $moduleName)
 $expectedCommands = @(
     'Get-PSWebConfig'
     'Test-PSWebConfig'
-    
+
     'Get-PSAppSetting'
 
     'Get-PSConnectionString'

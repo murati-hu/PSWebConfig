@@ -1,14 +1,13 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$TestVerbose=$false
+$isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-$webConfigFile = Join-Path $webConfigFolder 'web.config'
+$webConfigFile = Join-Path $script:configFolder 'web.config'
 
 Describe 'Get-PSAppSetting' {
     Context 'Local web.config' {
-        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
-        $appSettings = $config | Get-PSAppSetting -Verbose:$TestVerbose
+        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$isVerbose
+        $appSettings = $config | Get-PSAppSetting -Verbose:$isVerbose
 
         It 'should return all AppSettings' {
             $appSettings | Should Not BeNullOrEmpty

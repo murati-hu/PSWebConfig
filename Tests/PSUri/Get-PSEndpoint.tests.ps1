@@ -1,14 +1,13 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$TestVerbose=$false
+$isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-$webConfigFile = Join-Path $webConfigFolder 'web.config'
+$webConfigFile = Join-Path $script:configFolder 'web.config'
 
 Describe "Get-PSEndpoint" {
     Context "Local web.config" {
-        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
-        $endpoints = $config | Get-PSEndpoint -Verbose:$TestVerbose
+        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$isVerbose
+        $endpoints = $config | Get-PSEndpoint -Verbose:$isVerbose
 
         It "should return all client endpoints as an address" {
             $endpoints | Should Not BeNullOrEmpty

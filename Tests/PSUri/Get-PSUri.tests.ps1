@@ -1,14 +1,13 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$TestVerbose=$false
+$isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-$webConfigFile = Join-Path $webConfigFolder 'web.config'
+$webConfigFile = Join-Path $script:configFolder 'web.config'
 
 Describe 'Get-PSUri' {
     Context 'Local web.config' {
-        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
-        $addresses = $config | Get-PSUri -Verbose:$TestVerbose
+        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$isVerbose
+        $addresses = $config | Get-PSUri -Verbose:$isVerbose
 
         It 'should return all addresses' {
             $addresses | Should Not BeNullOrEmpty

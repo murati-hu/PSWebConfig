@@ -1,16 +1,15 @@
-. (Join-Path $PSScriptRoot Import-LocalModule.ps1)
+. (Join-Path $PSScriptRoot '../Import-LocalModule.ps1')
 
-$TestVerbose=$false
+$isVerbose=($VerbosePreference -eq 'Continue')
 
-$webConfigFolder = Join-Path $PSScriptRoot 'ConfigTests'
-$webConfigFile = Join-Path $webConfigFolder 'web.config'
+$webConfigFile = Join-Path $script:configFolder 'web.config'
 
 Describe "Get-PSConnectionString" {
     Context "Local web.config connectionStrings section" {
-        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$TestVerbose
+        $config = Get-PSWebConfig -Path $webConfigFile -Verbose:$isVerbose
 
         It "should return only connectionStrings by default" {
-            $connStrs = $config | Get-PSConnectionString -Verbose:$TestVerbose
+            $connStrs = $config | Get-PSConnectionString -Verbose:$isVerbose
             $connStrs | Should Not BeNullOrEmpty
             $connStrs.GetType().Name | Should Be "XmlElement"
             $connStrs.psobject.TypeNames -contains 'PSWebConfig.ConnectionString' | Should Be $true
@@ -21,7 +20,7 @@ Describe "Get-PSConnectionString" {
         }
 
         It "should return connectionStrings with -IncludeAppSettings" {
-            $connStrs = $config | Get-PSConnectionString -IncludeAppSettings -Verbose:$TestVerbose
+            $connStrs = $config | Get-PSConnectionString -IncludeAppSettings -Verbose:$isVerbose
             $connStrs | Should Not BeNullOrEmpty
             $connStrs.Count | Should Be 2
             $connStrs | Foreach-Object {

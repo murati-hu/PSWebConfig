@@ -16,7 +16,7 @@ ModuleVersion = '1.5.1.0'
 GUID = '37abef2c-d883-46be-ce1a-53d16477d01d'
 
 # Author of this module
-Author = 'akos@murati.hu'
+Author = 'Akos Murati (akos@murati.hu)'
 
 # Company or vendor of this module
 CompanyName = 'murati.hu'
