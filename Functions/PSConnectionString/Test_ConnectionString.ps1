@@ -4,7 +4,10 @@ function Test_ConnectionString {
         [string]$ConnectionString,
 
         [Parameter(Position=1)]
-        [hashtable]$ReplaceRules
+        [hashtable]$ReplaceRules,
+
+        [Parameter()]
+        [switch]$ShowPassword
     )
 
     $result = New-Object PsObject -Property @{
@@ -55,5 +58,11 @@ function Test_ConnectionString {
     } finally {
         if ($SqlConnection) { $SqlConnection.Close() }
     }
+
+    if (!$ShowPassword) {
+        Write-Verbose "Masking password due to ShowPassword:false .."
+        $result.ConnectionString = $result.ConnectionString  -ireplace ';\s*password=(\S+)\s*(;|$)',';password=***;'
+    }
+
     return $result
 }
