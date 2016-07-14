@@ -14,6 +14,9 @@
     If -ReplaceRules hashtable is specified it will replace hash-keys with it's
     values in the ConnectionString to be tested.
 
+    Passwords in the ConnectionString are masked by default, use -ShowPassword
+    switch if you need to show passwords in test-results.
+
 .PARAMETER InputObject
     Mandatory - Pipeline input of PsConnectionString
 
@@ -23,6 +26,9 @@
 .PARAMETER ReplaceRules
     Optional - Hashtable that replaces hash-keys with it's values in the
     ConnectionString to be tested.
+
+.PARAMETER ShowPassword
+    Optional - Switch to disable password masking for the test result.
 
 .PARAMETER Session
     Optional - PSSession to execute the test-against it.
@@ -42,7 +48,9 @@ function Test-PSConnectionString {
         [string]$ConnectionString,
 
         [hashtable]$ReplaceRules,
-        [System.Management.Automation.Runspaces.PSSession[]]$Session
+        [System.Management.Automation.Runspaces.PSSession[]]$Session,
+
+        [switch]$ShowPassword
     )
 
     process {
@@ -59,16 +67,17 @@ function Test-PSConnectionString {
                 $EntrySession = $entry.Session
                 if ($Session) { $EntrySession = $Session }
 
+                $ArgumentList = $entry.ConnectionString,$ReplaceRules,$ShowPassword
                 if ($EntrySession) {
                     Invoke-Command `
                         -Session $EntrySession `
-                        -ArgumentList $entry.ConnectionString,$ReplaceRules `
+                        -ArgumentList $ArgumentList `
                         -ScriptBlock $Function:Test_ConnectionString |
                     Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
                     Set_Type -TypeName 'PSWebConfig.TestResult'
                 } else {
                     Invoke-Command `
-                        -ArgumentList $entry.ConnectionString,$ReplaceRules `
+                        -ArgumentList $ArgumentList `
                         -ScriptBlock $Function:Test_ConnectionString |
                     Set_Type -TypeName 'PSWebConfig.TestResult'
                 }
