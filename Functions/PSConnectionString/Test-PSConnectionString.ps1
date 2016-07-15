@@ -54,6 +54,7 @@ function Test-PSConnectionString {
     )
 
     process {
+        Write-Verbose "Executing Test-PSConnectionString"
         if ($ConnectionString) {
             $InputObject =  New-Object -TypeName PsObject -Property @{
                 ConnectionString = $ConnectionString
@@ -69,6 +70,7 @@ function Test-PSConnectionString {
 
                 $ArgumentList = $entry.ConnectionString,$ReplaceRules,$ShowPassword
                 if ($EntrySession) {
+                    Write-Verbose "Remote Test execution from '$($EntrySession.ComputerName)'"
                     Invoke-Command `
                         -Session $EntrySession `
                         -ArgumentList $ArgumentList `
@@ -76,6 +78,7 @@ function Test-PSConnectionString {
                     Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru |
                     Set_Type -TypeName 'PSWebConfig.TestResult'
                 } else {
+                    Write-Verbose "Local Test execution"
                     Invoke-Command `
                         -ArgumentList $ArgumentList `
                         -ScriptBlock $Function:Test_ConnectionString |

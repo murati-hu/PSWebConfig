@@ -29,12 +29,15 @@ function Get-PSConnectionString {
     )
 
     process {
+        Write-Verbose "Executing Get-PSConnectionString"
         foreach ($config in $ConfigXml) {
             if ($config -is [string]) { $config = [xml]$config }
 
             if ($config | Get-Member -Name configuration) {
+                Write-Verbose "Processing configuration '$($config.ComputerName + " " + $config.File)'"
                 if ($config.configuration.connectionStrings.EncryptedData) {
                     Write-Warning "ConnectionStrings section is encrypted. You may not see all relevant entries."
+                    Write-Warning "Execute this command as an administrator for automatic decryption."
                 }
 
                 foreach ($connectionString in $config.configuration.connectionStrings.add) {
@@ -46,8 +49,12 @@ function Get-PSConnectionString {
                     Set_Type -TypeName "PSWebConfig.ConnectionString"
                 }
 
-                if (-Not $IncludeAppSettings) { continue }
+                if (-Not $IncludeAppSettings) {
+                    Write-Verbose "Appsettings are not included in ConnectionString processing."
+                    continue
+                }
 
+                Write-Verbose "Looking for ConnectionStrings in appsettings.."
                 $config | Get-PSAppSetting | ForEach-Object {
                     if ($_.value -match 'data source=') {
                         $_ |

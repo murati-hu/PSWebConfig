@@ -21,7 +21,9 @@ function Get-PSEndpoint {
     )
 
     process {
+        Write-Verbose "Executing Get-PSEndpoint"
         foreach ($config in $ConfigXml) {
+            Write-Verbose "Processing configuration '$($config.ComputerName + " " + $config.File)'"
             if ($config | Get-Member -Name configuration) {
                 foreach ($endpoint in $config.configuration.'system.serviceModel'.client.endpoint) {
                     $endpoint |
@@ -32,6 +34,8 @@ function Get-PSEndpoint {
                     Add-Member -MemberType AliasProperty -Name Uri -Value address -Force -PassThru |
                     Set_Type -TypeName 'PSWebConfig.Uri'
                 }
+            } else {
+                Write-Warning "Skipping invalid configuration: $config"
             }
         }
     }

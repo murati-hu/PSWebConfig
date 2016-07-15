@@ -21,12 +21,15 @@ function Get-PSAppSetting {
     )
 
     process {
+        Write-Verbose "Executing Get-PSAppSetting"
         foreach ($config in $ConfigXml) {
+            Write-Verbose "Processing configuration '$($config.ComputerName + " " + $config.File)'"
             if ($config -is [string]) { $config = [xml]$config }
 
             if ($config | Get-Member -Name configuration) {
                 if ($config.configuration.appSettings.EncryptedData) {
                     Write-Warning "appSettings section is encrypted. You may not see all relevant entries."
+                    Write-Warning "Execute this command as an administrator for automatic decryption."
                 }
 
                 foreach ($appSetting in $config.configuration.appSettings.add) {
