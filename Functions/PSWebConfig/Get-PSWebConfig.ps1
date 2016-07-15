@@ -8,6 +8,11 @@
     It accepts either Path or an InputObject to discover the configuration files
     and if -Recurse is specified it discovers all sub-configuration too.
 
+    Remote configurations can be fetched by setting -Session parameter.
+
+    If the input object is received from a PSSession instance, it will try to
+    use the session's InstanceId to fetch the configuration remotely.
+
 .PARAMETER InputObject
     Mandatory - Parameter to pass the Application or WebSite from pipeline
 .PARAMETER Path
@@ -67,7 +72,11 @@ function Get-PSWebConfig {
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
-        if (!$AsText -and !$AsFileInfo) { $AsXml = $true }
+        Write-Verbose "Executing Get-PSWebConfig"
+        if (!$AsText -and !$AsFileInfo) {
+            Write-Verbose "Defaulting output-format to XML object"
+            $AsXml = $true
+        }
 
         if ($Path) {
             Write-Verbose "Processing by Path"
@@ -80,25 +89,32 @@ function Get-PSWebConfig {
         if ($InputObject) {
             Write-Verbose "Processing by InputObject"
             foreach ($entry in $InputObject) {
+                # Setting Remote Session
+                $EntrySession = $entry.Session
+                if ($Session) {
+                    Write-Verbose "Overriding session from -Session Parameter"
+                    $EntrySession = $Session
+                }
+                elseif ($entry | Get-Member -Name RunspaceId) {
+                    Write-Verbose "Getting Session from RunspaceId '$($entry.RunspaceId)'"
+                    $EntrySession = Get-PSSession -InstanceId $entry.RunspaceId
+                }
 
-                if ($entry -is [System.IO.FileInfo]) {
+                if ($entry -is [System.IO.FileInfo] -or $entry.psobject.TypeNames -icontains 'Deserialized.System.IO.FileInfo') {
                     Write-Verbose "Adding physicalPath alias for [System.IO.FileInfo] FullName"
                     $entry = $entry | Add-Member -MemberType AliasProperty -Name physicalPath -Value FullName -PassThru
                 }
 
                 if ($entry | Get-Member -Name physicalPath) {
-                    $EntrySession = $entry.Session
-                    if ($Session) { $EntrySession = $Session }
-
                     if ($EntrySession) {
-                        Write-Verbose "Remote Invoke-Command to '$($EntrySession.ComputerName)'"
+                        Write-Verbose "Remote configuration fetch from '$($EntrySession.ComputerName + " " + $entry.physicalPath)'"
                         $response = Invoke-Command `
                             -Session $EntrySession `
                             -ArgumentList @($entry.physicalPath, $AsFileInfo, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile} |
                         Add-Member -NotePropertyName Session -NotePropertyValue $EntrySession -Force -PassThru
                     } else {
-                        Write-Verbose "Local Invoke-Command"
+                        Write-Verbose "Local configuration fetch from '$($entry.physicalPath)'"
                         $response = Invoke-Command `
                             -ArgumentList @($entry.physicalPath, $AsFileInfo, $AsText, $Recurse) `
                             -ScriptBlock ${function:Get_ConfigFile}

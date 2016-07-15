@@ -3,14 +3,22 @@
     Tests all URI and ConnectionStrings from web or application configuration.
 
 .DESCRIPTION
-    The cmdlet fetches all ConnectionString and URIs for a configuration file
-    and executes a test against them on a local or remote machine.
+    The cmdlet fetches all ConnectionString and service endpoint URIs
+    from a configuration xml and executes a test against them on a
+    local or remote machine.
+
+    If -IncludeAppSettings switch is defined, it will include any URI or
+    ConnectionStrings to the tests.
 
 .PARAMETER InputObject
     Mandatory - Parameter to pass a PSWebConfig object
 
 .PARAMETER Session
     Optional - PSSession to execute configuration test
+
+.PARAMETER IncludeAppSettings
+    Optional - Switch to include URIs and ConnectionStrings from appSettings
+    sections
 
 .EXAMPLE
     Get-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\' | Test-PSWebConfig
@@ -25,13 +33,16 @@ function Test-PSWebConfig {
         [Parameter(ValueFromPipeLine=$true)]
         [psobject[]]$ConfigXml,
 
+        [switch]$IncludeAppSettings,
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
     process {
-       Get-PSEndpoint -ConfigXml $ConfigXml |
-       Test-PSUri -Session $Session
+        Write-Verbose "Executing Test-PSWebConfig"
 
-       Get-PSConnectionString -ConfigXml $ConfigXml |
-       Test-PSConnectionString -Session $Session
+        Get-PSUri -ConfigXml $ConfigXml -IncludeAppSettings:$IncludeAppSettings |
+        Test-PSUri -Session $Session
+
+        Get-PSConnectionString -ConfigXml $ConfigXml -IncludeAppSettings:$IncludeAppSettings |
+        Test-PSConnectionString -Session $Session
     }
 }

@@ -71,6 +71,8 @@ function Test-PSUri {
     )
 
     process {
+        Write-Verbose "Executing Test-PSUri"
+
         if ($Uri) {
             $InputObject = $Uri | Foreach-Object {
                 New-Object -TypeName PsObject -Property @{
