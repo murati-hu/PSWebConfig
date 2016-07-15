@@ -37,3 +37,9 @@
 ## 1.5.2 (Feb 28, 2016)
 - Refactor Pester tests and Fixtures
 - Reorganize functions into subfolders
+
+## 1.6.0 (Jul 15, 2016)
+- Enable remote executions with resolving RunspaceIds without specifying -Session parameter
+- Add password-masking to Test-PSConnectionString
+- Test-PsWebConfig now support -IncludeAppsettings parameters
+- Better detailed -Verbose info from all cmdlets

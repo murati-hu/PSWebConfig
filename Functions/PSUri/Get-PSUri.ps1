@@ -9,6 +9,8 @@
 
 .PARAMETER ConfigXml
     Mandatory - Pipeline input for Configuration XML
+.PARAMETER IncludeAppSettings
+    Optional - Switch to include http/s URIs from appsettings
 
 .EXAMPLE
     Get-PSWebConfig -Path 'C:\inetpub\wwwroot\myapp' | Get-PSUri
@@ -19,19 +21,27 @@ function Get-PSUri {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true,ValueFromPipeLine=$true)]
-        [psobject[]]$ConfigXml
+        [psobject[]]$ConfigXml,
+        [switch]$IncludeAppSettings
     )
 
     process {
-        # Return all service endpoint addresses
+        Write-Verbose "Executing Get-PSUri"
+
+        Write-Verbose "Looking for service-endpoint addresses..."
         Get-PSEndpoint -ConfigXml $configXml
 
-        # Return any URL from appSettings as an Address
-        Get-PSAppSetting -ConfigXml $configXml |
-            Where-Object value -imatch '^http[s]*:' |
-            Add-Member -MemberType AliasProperty -Name name -Value key -Force -PassThru |
-            Add-Member -MemberType AliasProperty -Name address -Value value -Force -PassThru |
-            Add-Member -MemberType AliasProperty -Name Uri -Value value -Force -PassThru |
-            Set_Type -TypeName 'PSWebConfig.Uri'
+        if (-Not $IncludeAppSettings) {
+            Write-Verbose "Appsettings are not included in URI processing."
+            return
+        } else {
+            Write-Verbose "Looking for any http URLs from appSettings..."
+            Get-PSAppSetting -ConfigXml $configXml |
+                Where-Object value -imatch '^http[s]*:' |
+                Add-Member -MemberType AliasProperty -Name name -Value key -Force -PassThru |
+                Add-Member -MemberType AliasProperty -Name address -Value value -Force -PassThru |
+                Add-Member -MemberType AliasProperty -Name Uri -Value value -Force -PassThru |
+                Set_Type -TypeName 'PSWebConfig.Uri'
+        }
     }
 }
