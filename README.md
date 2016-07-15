@@ -3,17 +3,17 @@ PSWebConfig PowerShell module
 
 [![Build status](https://ci.appveyor.com/api/projects/status/4tcovid4e04m1vdx?svg=true)](https://ci.appveyor.com/project/muratiakos/pswebconfig)
 
-PSWebConfig is a PowerShell module that provides an easy way to decrypt and
-inspect and test web.config or application configuration files locally or remotely.
+PSWebConfig is a PowerShell module that provides an easy way to automatically decrypt,
+inspect and test web.config or any .NET based application configuration files both
+locally or remotely.
 
 ## Installation
-PSWebConfig is available via [PsGet][psget], so you can simply install it with the
-following command:
+PSWebConfig is available via [PowerShellGallery][PowerShellGallery] or [PsGet][psget],
+so you can simply install it with the following command:
 ```powershell
-# Install it from PsGet
 Install-Module PSWebConfig
 
-# Or install it from this repository
+# Or alternatevely you can install it with PsGet from this repository
 Install-Module -ModuleUrl https://github.com/muratiakos/PSWebConfig/archive/master.zip
 ```
 Of course you can download and install the module manually too from
@@ -25,13 +25,24 @@ Import-Module PSWebConfig
 ```
 
 ## Examples
-### View and decrypt a web.config
+### View and automatically decrypt a web.config
 ```powershell
-# You can pipe any site into Get-PSWebConfig
+# You can pipe any site into Get-PSWebConfig to decrypt it automatically
 Get-Website * | Get-PSWebConfig -AsText
 
 # You can use -Path attribute to find web.config files
 Get-PSWebConfig -Path C:\inetpub\wwwroot\
+```
+### Test config files
+`Test-PSWebConfig` function  allows complete tests on all connectionStrings and
+Service addresses from a configuration object both on local or remote computers.
+```powershell
+# Pipe Get-PSWebConfig into Test-PSWebConfig
+Get-Website * | Get-PSWebConfig | Test-PSWebConfig
+
+# Or use -Session to test it via remote PSSession
+$server1 = New-PSSession 'server1.local.domain'
+Get-PSWebConfig -Path C:\inetpub\wwwroot\ -Session $server1 | Test-PSWebConfig
 ```
 
 ### Inspect ConnectionStrings
@@ -44,6 +55,8 @@ Get-PSWebConfig -Path C:\inetpub\wwwroot\ | Get-PSConnectionString -IncludeAppSe
 ```
 
 ### Test ConnectionStrings
+`Test-PSConnectionString` cmdlet tries to initiate a SQL connection from a local or
+remote computer to test if there are any issue connection to a database.
 ```powershell
 # Pipe Get-PSConnectionString to Test-PSConnectionString
 Get-Website * | Get-PSWebConfig | Get-PSConnectionString -Inc | Test-PSConnectionString
@@ -66,19 +79,6 @@ Get-Website * | Get-PSWebConfig | Get-PSEndpoint
 # Or pipe Get-PSWebConfig into Get-PSUri to get URLs from appSettings too.
 Get-Website * | Get-PSWebConfig | Get-PSUri
 ```
-
-### Test config files completely
-`Test-PSWebConfig` function  allows complete tests on all connectionStrings and
-Service addresses from a configuration object both on local or remote computers.
-```powershell
-# Pipe Get-PSWebConfig object into Test-PSWebConfig
-Get-Website * | Get-PSWebConfig | Test-PSWebConfig
-
-# Or use -Session to test it via remote PSSession
-$server1 = New-PSSession 'server1.local.domain'
-Get-PSWebConfig -Path C:\inetpub\wwwroot\ | Test-PSWebConfig -Session $server1
-```
-
 
 Call `help` on any of the PSWebConfig cmdlets for more information and examples.
 
@@ -119,4 +119,5 @@ Apache License, Version 2.0 (see [LICENSE][LICENSE])
 [license]: LICENSE
 [semver]: http://semver.org/
 [psget]: http://psget.net/
+[PowerShellGallery]: https://www.powershellgallery.com/packages/PSWebConfig
 [download]: https://github.com/muratiakos/PSWebConfig/archive/master.zip
