@@ -8,7 +8,7 @@ inspect and test web.config or any .NET based application configuration files bo
 locally or remotely.
 
 ## Installation
-PSWebConfig is available via [PowerShellGallery][PowerShellGallery] or [PsGet][psget],
+PSWebConfig is available via [PowerShell Gallery][PowerShellGallery] or [PsGet][psget],
 so you can simply install it with the following command:
 ```powershell
 Install-Module PSWebConfig
@@ -25,7 +25,10 @@ Import-Module PSWebConfig
 ```
 
 ## Examples
-### View and automatically decrypt a web.config
+### View and decrypt a web.config
+`Get-PSWebConfig` cmdlet automatically fetches and decrypts any web.config
+file both locally and remotely without altering the actual config file on the
+target computer:
 ```powershell
 # You can pipe any site into Get-PSWebConfig to decrypt it automatically
 Get-Website * | Get-PSWebConfig -AsText
