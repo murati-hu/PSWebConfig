@@ -10,7 +10,7 @@
 RootModule = 'PSWebConfig.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.6.0.0'
+ModuleVersion = '1.6.1.0'
 
 # ID used to uniquely identify this module
 GUID = '37abef2c-d883-46be-ce1a-53d16477d01d'
@@ -85,7 +85,11 @@ FunctionsToExport = @(
 # VariablesToExport = '*'
 
 # Aliases to export from this module
-# AliasesToExport = '*'
+AliasesToExport = @(
+    'Get-PSAppConfig'
+    'Test-PSAppConfig'
+    'Test-WebConfigFile'
+)
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -118,14 +122,15 @@ PrivateData = @{
             'config',
             'configuration',
             'section',
+            'IISAdministration',
             'WebAdministration'
         )
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/muratiakos/PSWebConfig/blob/master/LICENSE'
+        LicenseUri = 'https://github.com/murati-hu/PSWebConfig/blob/master/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/muratiakos/PSWebConfig'
+        ProjectUri = 'https://github.com/murati-hu/PSWebConfig'
 
         # A URL to an icon representing this module.
         # IconUri = ''
@@ -138,7 +143,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/muratiakos/PSWebConfig'
+HelpInfoURI = 'https://github.com/murati-hu/PSWebConfig'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''

@@ -38,10 +38,10 @@ Get-PSWebConfig -Path C:\inetpub\wwwroot\
 ```
 ### Test config files
 `Test-PSWebConfig` function  allows complete tests on all connectionStrings and
-Service addresses from a configuration object both on local or remote computers.
+Service addresses from a configuration both on local or remote computers.
 ```powershell
-# Pipe Get-PSWebConfig into Test-PSWebConfig
-Get-Website * | Get-PSWebConfig | Test-PSWebConfig
+# Pipe a config into Test-PSWebConfig
+Get-Website * | Test-PSWebConfig
 
 # Or use -Session to test it via remote PSSession
 $server1 = New-PSSession 'server1.local.domain'
@@ -116,11 +116,11 @@ Created and maintained by [Akos Murati][muratiakos] (<akos@murati.hu>).
 ## License
 Apache License, Version 2.0 (see [LICENSE][LICENSE])
 
-[repo]: https://github.com/muratiakos/PSWebConfig
-[issues]: https://github.com/muratiakos/PSWebConfig/issues
+[repo]: https://github.com/murati-hu/PsWebConfig
+[issues]: https://github.com/murati-hu/PsWebConfig/issues
 [muratiakos]: http://murati.hu
 [license]: LICENSE
 [semver]: http://semver.org/
 [psget]: http://psget.net/
 [PowerShellGallery]: https://www.powershellgallery.com/packages/PSWebConfig
-[download]: https://github.com/muratiakos/PSWebConfig/archive/master.zip
+[download]: https://github.com/murati-hu/PSWebConfig/archive/master.zip
