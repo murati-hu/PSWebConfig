@@ -29,8 +29,11 @@
 function Test-PSWebConfig {
     [CmdletBinding(DefaultParameterSetName="FromPipeLine")]
     param(
-        [Parameter(ParameterSetName="FromPipeLine",Position=0)]
-        [Parameter(ValueFromPipeLine=$true)]
+        [Parameter(
+            ParameterSetName="FromPipeLine",
+            ValueFromPipeLine=$true,
+            Position=0,
+            Mandatory=$true)]
         [psobject[]]$ConfigXml,
 
         [switch]$IncludeAppSettings,
@@ -38,6 +41,11 @@ function Test-PSWebConfig {
     )
     process {
         Write-Verbose "Executing Test-PSWebConfig"
+
+        if (-Not $ConfigXml.configuration) {
+            Write-Verbose "InputObject is not a valid XML configuration, trying to get config XML."
+            $ConfigXml = Get-PSWebConfig -InputObject $ConfigXml
+        }
 
         Get-PSUri -ConfigXml $ConfigXml -IncludeAppSettings:$IncludeAppSettings |
         Test-PSUri -Session $Session
