@@ -14,7 +14,7 @@ so you can simply install it with the following command:
 Install-Module PSWebConfig
 
 # Or alternatevely you can install it with PsGet from this repository
-Install-Module -ModuleUrl https://github.com/muratiakos/PSWebConfig/archive/master.zip
+Install-Module -ModuleUrl https://github.com/murati-hu/PSWebConfig/archive/master.zip
 ```
 Of course you can download and install the module manually too from
 [Downloads][download]
