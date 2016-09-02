@@ -76,6 +76,8 @@ FunctionsToExport = @(
     'Get-PSEndpoint'
     'Get-PSUri'
     'Test-PSUri'
+
+    'Unprotect-PSWebConfig'
 )
 
 # Cmdlets to export from this module
@@ -89,6 +91,7 @@ AliasesToExport = @(
     'Get-PSAppConfig'
     'Test-PSAppConfig'
     'Test-WebConfigFile'
+    'Decrypt-PSWebConfig'
 )
 
 # DSC resources to export from this module
