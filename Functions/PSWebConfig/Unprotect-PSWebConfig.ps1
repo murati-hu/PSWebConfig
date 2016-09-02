@@ -73,7 +73,21 @@ function Unprotect-PSWebConfig {
                     $backupFile = [string]::Join('.',@($configFile,((Get-Date -Format s) -replace ':','-'),'config'))
                     $decryptedConfig = Get-PSWebConfig -AsText -Path $configFile -Session:$EntrySession
 
-                    Invoke-Command -Session:$EntrySession -ArgumentList $configFile,$backupFile,$decryptedConfig -ScriptBlock
+                    $BackupAndOverride = {
+                        param(
+                            [string]$configFile,
+                            [string]$backupFile,
+                            [string]$decryptedConfig,
+                            [bool]$Confirm=$true
+                        )
+                        Write-Verbose "Creating backup to '$backupFile'.."
+                        Copy-Item -Path $configFile -Destination $backupFile -Force -Confirm:$Confirm
+
+                        Write-Verbose "Overriding '$configFile' with decrypted content ..."
+                        Set-Content -Path $configFile -Value $decryptedConfig -Confirm:$Confirm
+                    }
+
+                    Invoke-SessionCommand -Session:$EntrySession -ArgumentList $configFile,$backupFile,$decryptedConfig -ScriptBlock $BackupAndOverride
                 }
             }
         }
