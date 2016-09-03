@@ -1,6 +1,8 @@
 PSWebConfig PowerShell module
 ==========================
 
+[![Join the chat at https://gitter.im/murati-hu/PSWebConfig](https://badges.gitter.im/murati-hu/PSWebConfig.svg)](https://gitter.im/murati-hu/PSWebConfig?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/4tcovid4e04m1vdx?svg=true)](https://ci.appveyor.com/project/muratiakos/pswebconfig)
 
 PSWebConfig is a PowerShell module that provides an easy way to automatically decrypt,
