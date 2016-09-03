@@ -6,6 +6,9 @@ $expectedCommands = @(
     'Get-PSWebConfig'
     'Get-PSAppConfig'
 
+    'Decrypt-PSWebConfig'
+    'Unprotect-PSWebConfig'
+
     'Test-PSWebConfig'
     'Test-WebConfigFile'
     'Test-PSAppConfig'
