@@ -30,11 +30,14 @@ Import-Module PSWebConfig
 file both locally and remotely without altering the actual config file on the
 target computer:
 ```powershell
-# You can pipe any site into Get-PSWebConfig to decrypt it automatically
-Get-Website * | Get-PSWebConfig -AsText
+# Pipe any site into Get-PSWebConfig to show the decrypted config
+Get-Website | Get-PSWebConfig -AsText
 
 # You can use -Path attribute to find web.config files
 Get-PSWebConfig -Path C:\inetpub\wwwroot\
+
+# If you wish to override the config with its decrypted version
+Get-Website | Decrypt-PSWebConfig -Confirm $false
 ```
 ### Test config files
 `Test-PSWebConfig` function  allows complete tests on all connectionStrings and
