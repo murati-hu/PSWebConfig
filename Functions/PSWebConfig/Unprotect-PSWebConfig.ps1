@@ -2,6 +2,12 @@
 .SYNOPSIS
     Decrypts and saves inplace a web.config file
 .DESCRIPTION
+    Takes a Path or a WebAdministration object as an input, creates a
+    backup of the original file and overrides the configuration with its
+    decrypted version.
+
+    The cmdlet prompts for clarification on the override, unless -Confirm
+    is set to false.
 
 .PARAMETER InputObject
     Mandatory - Parameter to pass the Application or WebSite from pipeline
@@ -10,8 +16,10 @@
 .PARAMETER Recurse
     Optional - Switch to look for multiple web.config files in sub-folders for
     web applications
+.PARAMETER Confirm
+    Optional - Boolean to disable override confirmation (default -Confirm:$true)
 .PARAMETER Session
-    Optional - PSSession to execute configuration file lookup
+    Optional - PSSession to execute the action
 
 .EXAMPLE
     Unprotect-PSWebConfig -Path 'c:\intepub\wwwroot\testapp\'
@@ -33,10 +41,8 @@ function Unprotect-PSWebConfig {
         [Alias('physicalPath')]
         [string]$Path,
 
-        [Parameter(ParameterSetName="FromPath")]
-        [Parameter(ParameterSetName="FromPipeLine")]
-        [Parameter(ParameterSetName="AsXml")]
         [switch]$Recurse,
+        [bool]$Confirm=$true,
 
         [System.Management.Automation.Runspaces.PSSession]$Session
     )
@@ -78,16 +84,16 @@ function Unprotect-PSWebConfig {
                             [string]$configFile,
                             [string]$backupFile,
                             [string]$decryptedConfig,
-                            [bool]$Confirm=$true
+                            [bool]$Confirm
                         )
                         Write-Verbose "Creating backup to '$backupFile'.."
-                        Copy-Item -Path $configFile -Destination $backupFile -Force -Confirm:$Confirm
+                        Copy-Item -Path $configFile -Destination $backupFile -Force
 
                         Write-Verbose "Overriding '$configFile' with decrypted content ..."
                         Set-Content -Path $configFile -Value $decryptedConfig -Confirm:$Confirm
                     }
 
-                    Invoke-SessionCommand -Session:$EntrySession -ArgumentList $configFile,$backupFile,$decryptedConfig -ScriptBlock $BackupAndOverride
+                    Invoke-SessionCommand -Session:$EntrySession -ArgumentList $configFile,$backupFile,$decryptedConfig,$Confirm -ScriptBlock $BackupAndOverride
                 }
             }
         }
